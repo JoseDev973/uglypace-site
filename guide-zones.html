@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Training Zones For Humans</title>
+  <meta name="description" content="Training zones explained for normal people. No PhD required. Just honest explanations that actually help you train smarter.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    li[data-lang-es] { display: none; }
+    li[data-lang-en] { display: list-item; }
+
+    html[lang="es"] li[data-lang-es] { display: list-item; }
+    html[lang="es"] li[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Guide Header ── */
+    .guide-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .guide-header .section-title {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .guide-intro {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Guide Content ── */
+    .guide-section {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .guide-section h2 .zone-num {
+      color: var(--yellow);
+      margin-right: 8px;
+    }
+
+    .guide-section h2 .zone-label {
+      color: var(--purple);
+      font-size: clamp(16px, 2.5vw, 22px);
+      display: block;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .guide-section p {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray);
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .guide-section p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .guide-section .highlight {
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    /* ── Zone Card Style ── */
+    .zone-section {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .zone-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .zone-number {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1;
+      color: var(--yellow);
+    }
+
+    .zone-title-group h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .zone-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 0.1em;
+      color: var(--purple);
+    }
+
+    .zone-section p {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray);
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .zone-section p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .zone-section .highlight {
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 0 auto 48px;
+    }
+
+    /* ── CTA Section ── */
+    .guide-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .guide-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .guide-header {
+        padding-top: 100px;
+      }
+
+      .zone-header {
+        gap: 8px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="guide-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Guide</span>
+        <span data-lang-es>Guia</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>Training Zones<br>For Humans</span>
+        <span data-lang-es>Zonas De Entrenamiento<br>Para Humanos</span>
+      </h1>
+      <p class="guide-intro" data-lang-en>No PhD required. No lab coat. Just an honest explanation of the gears your body has and why you've been stuck in the wrong one.</p>
+      <p class="guide-intro" data-lang-es>No necesitas doctorado. Ni bata de laboratorio. Solo una explicacion honesta de las marchas que tiene tu cuerpo y por que has estado atascado en la equivocada.</p>
+    </div>
+  </section>
+
+  <!-- What Are Zones? -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>What Are Zones?</span>
+          <span data-lang-es>Que Son Las Zonas?</span>
+        </h2>
+        <p data-lang-en>Your body has different gears. Like a car. Zones are those gears. They're based on how hard your heart is working, which you can measure with heart rate or pace.</p>
+        <p data-lang-en><strong>Most people train in 2nd gear all the time.</strong> Every run, same effort. Not easy enough to build your aerobic base. Not hard enough to get faster. Just... medium. Forever. And then they wonder why they don't improve.</p>
+        <p data-lang-en>Understanding zones doesn't mean you need to obsess over data. It means you stop guessing and start <span class="highlight">training with purpose</span>. Easy days get easier. Hard days get harder. And you actually get better.</p>
+
+        <p data-lang-es>Tu cuerpo tiene diferentes marchas. Como un carro. Las zonas son esas marchas. Se basan en que tan duro esta trabajando tu corazon, lo cual puedes medir con frecuencia cardiaca o ritmo.</p>
+        <p data-lang-es><strong>La mayoria de la gente entrena en 2da marcha todo el tiempo.</strong> Cada corrida, el mismo esfuerzo. No lo suficientemente facil para construir tu base aerobica. No lo suficientemente duro para ser mas rapido. Solo... medio. Siempre. Y luego se preguntan por que no mejoran.</p>
+        <p data-lang-es>Entender las zonas no significa que necesitas obsesionarte con los datos. Significa que dejas de adivinar y empiezas a <span class="highlight">entrenar con proposito</span>. Los dias faciles se vuelven mas faciles. Los dias duros se vuelven mas duros. Y realmente mejoras.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone 1 -->
+  <section class="zone-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="zone-header">
+          <div class="zone-number">Z1</div>
+          <div class="zone-title-group">
+            <h2>
+              <span data-lang-en>Recovery</span>
+              <span data-lang-es>Recuperacion</span>
+            </h2>
+            <p class="zone-subtitle">
+              <span data-lang-en>"Am I even exercising?"</span>
+              <span data-lang-es>"Esto cuenta como ejercicio?"</span>
+            </p>
+          </div>
+        </div>
+        <p data-lang-en>Walking pace. Maybe a very slow jog. So slow that you feel slightly embarrassed if someone sees you. <strong>Yes. Barely. But yes, you are exercising.</strong></p>
+        <p data-lang-en>Zone 1 is for recovery days. After a hard session or a race, your body needs to move without stress. This zone promotes blood flow, helps clear metabolic waste, and lets your muscles repair. It feels like nothing. That's the point.</p>
+        <p data-lang-en>If your ego can't handle running this slow, walk. Walking is Zone 1. Walking is training. Walking is valid.</p>
+
+        <p data-lang-es>Paso de caminata. Quizas un trote muy lento. Tan lento que te da un poco de pena si alguien te ve. <strong>Si. Apenas. Pero si, estas haciendo ejercicio.</strong></p>
+        <p data-lang-es>La Zona 1 es para dias de recuperacion. Despues de una sesion dura o una carrera, tu cuerpo necesita moverse sin estres. Esta zona promueve el flujo sanguineo, ayuda a limpiar los desechos metabolicos, y deja que tus musculos se reparen. Se siente como nada. Ese es el punto.</p>
+        <p data-lang-es>Si tu ego no aguanta correr tan lento, camina. Caminar es Zona 1. Caminar es entrenamiento. Caminar es valido.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone 2 -->
+  <section class="zone-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="zone-header">
+          <div class="zone-number">Z2</div>
+          <div class="zone-title-group">
+            <h2>
+              <span data-lang-en>Easy / Aerobic</span>
+              <span data-lang-es>Facil / Aerobico</span>
+            </h2>
+            <p class="zone-subtitle">
+              <span data-lang-en>The magic zone</span>
+              <span data-lang-es>La zona magica</span>
+            </p>
+          </div>
+        </div>
+        <p data-lang-en>You can talk but you'd rather not. You could hold a conversation but you'd prefer if nobody talked to you. This is the conversational pace. The "I'm fine but please don't ask me about my day" pace.</p>
+        <p data-lang-en><span class="highlight">70% of your training should be here.</span> Yes, really. No, it doesn't feel hard enough. That's the point.</p>
+        <p data-lang-en>Zone 2 builds your aerobic engine. It teaches your body to burn fat for fuel, strengthens your heart, builds capillary density, and creates the foundation for everything else. Every elite runner in the world spends most of their time here. If it's good enough for them, it's good enough for you.</p>
+        <p data-lang-en>The hardest part of Zone 2 is not going faster. Your brain will tell you this is too easy. Your Garmin will tell you this is too slow. <strong>They're both wrong.</strong> Trust the zone. The speed comes later.</p>
+
+        <p data-lang-es>Puedes hablar pero preferiras no hacerlo. Podrias mantener una conversacion pero preferiras que nadie te hable. Este es el ritmo conversacional. El ritmo de "estoy bien pero por favor no me preguntes como me fue en el dia."</p>
+        <p data-lang-es><span class="highlight">El 70% de tu entrenamiento deberia estar aqui.</span> Si, en serio. No, no se siente lo suficientemente duro. Ese es el punto.</p>
+        <p data-lang-es>La Zona 2 construye tu motor aerobico. Le ensena a tu cuerpo a quemar grasa como combustible, fortalece tu corazon, construye densidad capilar, y crea la base para todo lo demas. Cada corredor elite en el mundo pasa la mayor parte de su tiempo aqui. Si es suficientemente bueno para ellos, es suficientemente bueno para ti.</p>
+        <p data-lang-es>Lo mas dificil de la Zona 2 es no ir mas rapido. Tu cerebro te va a decir que esto es muy facil. Tu Garmin te va a decir que esto es muy lento. <strong>Los dos estan equivocados.</strong> Confia en la zona. La velocidad viene despues.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone 3 -->
+  <section class="zone-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="zone-header">
+          <div class="zone-number">Z3</div>
+          <div class="zone-title-group">
+            <h2>
+              <span data-lang-en>The Gray Zone</span>
+              <span data-lang-es>La Zona Gris</span>
+            </h2>
+            <p class="zone-subtitle">
+              <span data-lang-en>Where gains go to die</span>
+              <span data-lang-es>Donde las ganancias van a morir</span>
+            </p>
+          </div>
+        </div>
+        <p data-lang-en>Not easy enough to recover. Not hard enough to improve. The junk mile zone. <span class="highlight">Where gains go to die.</span></p>
+        <p data-lang-en>Zone 3 feels like "a good effort." It feels productive. It feels like you're doing something. You're not. You're accumulating fatigue without the benefit of hard training, and you're too stressed to get the benefits of easy training. It's the worst of both worlds.</p>
+        <p data-lang-en><strong>Avoid it.</strong> Unless your coach specifically programs it (there are some valid uses), Zone 3 is the default pace of people who don't train with zones. It's the "I just went out and ran" pace. And it's the reason most recreational runners plateau.</p>
+
+        <p data-lang-es>No lo suficientemente facil para recuperarte. No lo suficientemente duro para mejorar. La zona de los kilometros basura. <span class="highlight">Donde las ganancias van a morir.</span></p>
+        <p data-lang-es>La Zona 3 se siente como "un buen esfuerzo." Se siente productiva. Se siente como si estuvieras haciendo algo. No lo estas haciendo. Estas acumulando fatiga sin el beneficio del entrenamiento duro, y estas demasiado estresado para obtener los beneficios del entrenamiento facil. Es lo peor de los dos mundos.</p>
+        <p data-lang-es><strong>Evitala.</strong> A menos que tu coach la programe especificamente (hay algunos usos validos), la Zona 3 es el ritmo default de la gente que no entrena con zonas. Es el ritmo de "sali a correr nomas." Y es la razon por la que la mayoria de los corredores recreativos se estancan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone 4 -->
+  <section class="zone-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="zone-header">
+          <div class="zone-number">Z4</div>
+          <div class="zone-title-group">
+            <h2>
+              <span data-lang-en>Threshold</span>
+              <span data-lang-es>Umbral</span>
+            </h2>
+            <p class="zone-subtitle">
+              <span data-lang-en>"I can do this but I hate it"</span>
+              <span data-lang-es>"Puedo hacer esto pero lo odio"</span>
+            </p>
+          </div>
+        </div>
+        <p data-lang-en>Controlled suffering. You can hold this for 20-40 minutes if someone is holding a metaphorical (or literal) gun to your head. Speaking is limited to one or two words. Mostly curse words.</p>
+        <p data-lang-en><strong>This is where you get faster.</strong> Short intervals at this intensity -- 4 to 8 minutes with rest in between -- teach your body to process lactate better, raise your threshold pace, and make everything below this feel easier.</p>
+        <p data-lang-en>Zone 4 should hurt. Not "I'm going to die" hurt, but "I would very much like this to stop" hurt. If you can comfortably hold a conversation, you're not in Zone 4. If you can't see straight, you've gone past it.</p>
+        <p data-lang-en>Use it sparingly. 1-2 sessions per week, max. The rest should be Zone 2. <span class="highlight">Quality over quantity. Always.</span></p>
+
+        <p data-lang-es>Sufrimiento controlado. Puedes mantener esto por 20-40 minutos si alguien te tiene un arma metaforica (o literal) en la cabeza. Hablar se limita a una o dos palabras. La mayoria groserias.</p>
+        <p data-lang-es><strong>Aqui es donde te vuelves mas rapido.</strong> Intervalos cortos a esta intensidad -- 4 a 8 minutos con descanso entre ellos -- le ensenan a tu cuerpo a procesar mejor el lactato, suben tu ritmo de umbral, y hacen que todo por debajo de esto se sienta mas facil.</p>
+        <p data-lang-es>La Zona 4 deberia doler. No el dolor de "me voy a morir", sino el dolor de "me gustaria mucho que esto parara." Si puedes mantener una conversacion comoda, no estas en Zona 4. Si no puedes ver bien, te pasaste.</p>
+        <p data-lang-es>Usala con moderacion. 1-2 sesiones por semana, maximo. El resto deberia ser Zona 2. <span class="highlight">Calidad sobre cantidad. Siempre.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone 5 -->
+  <section class="zone-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="zone-header">
+          <div class="zone-number">Z5</div>
+          <div class="zone-title-group">
+            <h2>
+              <span data-lang-en>VO2max / All Out</span>
+              <span data-lang-es>VO2max / Maximo</span>
+            </h2>
+            <p class="zone-subtitle">
+              <span data-lang-en>You can barely see</span>
+              <span data-lang-es>Apenas puedes ver</span>
+            </p>
+          </div>
+        </div>
+        <p data-lang-en>You can't talk. You can barely see. Your vision narrows. Your lungs are on fire. The only thought in your head is <strong>"why."</strong></p>
+        <p data-lang-en>30 seconds to 3 minutes max. That's all you can sustain here. And that's all you need. Zone 5 builds your VO2max -- your body's ceiling for oxygen processing. It's the highest gear. The one you use when the finish line is 200 meters away and you want to not get passed.</p>
+        <p data-lang-en>It also builds regret. Lots of it. The kind where you're bent over after the interval wondering what you did to deserve this. <span class="highlight">But that's where your top-end fitness lives.</span></p>
+        <p data-lang-en>Not every runner needs Zone 5. If you're a beginner, you can skip it entirely and focus on Zones 1-4. If you're chasing a PR or racing competitively, a little Zone 5 goes a long way. Emphasis on "a little."</p>
+
+        <p data-lang-es>No puedes hablar. Apenas puedes ver. Tu vision se estrecha. Tus pulmones estan en llamas. El unico pensamiento en tu cabeza es <strong>"por que."</strong></p>
+        <p data-lang-es>30 segundos a 3 minutos maximo. Eso es todo lo que puedes sostener aqui. Y eso es todo lo que necesitas. La Zona 5 construye tu VO2max -- el techo de tu cuerpo para procesar oxigeno. Es la marcha mas alta. La que usas cuando la meta esta a 200 metros y no quieres que te pasen.</p>
+        <p data-lang-es>Tambien construye arrepentimiento. Mucho. Del tipo donde estas doblado despues del intervalo preguntandote que hiciste para merecer esto. <span class="highlight">Pero ahi es donde vive tu fitness de alta gama.</span></p>
+        <p data-lang-es>No todos los corredores necesitan Zona 5. Si eres principiante, puedes saltartela completamente y enfocarte en Zonas 1-4. Si estas persiguiendo un PR o compitiendo, un poco de Zona 5 rinde mucho. Enfasis en "un poco."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How To Find Your Zones -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>How To Find Your Zones</span>
+          <span data-lang-es>Como Encontrar Tus Zonas</span>
+        </h2>
+        <p data-lang-en>Three options, from most to least accurate:</p>
+        <p data-lang-en><strong>1. Lactate test.</strong> Go to a sports lab. Run on a treadmill while they prick your finger every few minutes. Expensive but accurate. You'll know your exact thresholds. Worth it if you're serious.</p>
+        <p data-lang-en><strong>2. Threshold test.</strong> Run a 30-minute all-out effort (after warming up). Your average heart rate and pace from the last 20 minutes approximates your threshold. Free but painful. You'll question your life choices around minute 22.</p>
+        <p data-lang-en><strong>3. Age-based formulas.</strong> The classic "220 minus your age" thing. <span class="highlight">Free and inaccurate, like your ex.</span> Better than nothing, but your real zones could be 10-15 beats different. Use this only if options 1 and 2 aren't available.</p>
+
+        <p data-lang-es>Tres opciones, de la mas a la menos precisa:</p>
+        <p data-lang-es><strong>1. Test de lactato.</strong> Ve a un laboratorio deportivo. Corre en una caminadora mientras te pinchan el dedo cada pocos minutos. Caro pero preciso. Vas a conocer tus umbrales exactos. Vale la pena si vas en serio.</p>
+        <p data-lang-es><strong>2. Test de umbral.</strong> Corre 30 minutos a maximo esfuerzo (despues de calentar). Tu frecuencia cardiaca y ritmo promedio de los ultimos 20 minutos aproxima tu umbral. Gratis pero doloroso. Vas a cuestionar tus decisiones de vida alrededor del minuto 22.</p>
+        <p data-lang-es><strong>3. Formulas basadas en edad.</strong> La clasica "220 menos tu edad." <span class="highlight">Gratis e imprecisa, como tu ex.</span> Mejor que nada, pero tus zonas reales podrian estar 10-15 latidos de diferencia. Usa esto solo si las opciones 1 y 2 no estan disponibles.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Big Mistake -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>The Big Mistake</span>
+          <span data-lang-es>El Gran Error</span>
+        </h2>
+        <p data-lang-en>Running too hard on easy days and too easy on hard days. That's it. That's the mistake almost every runner makes.</p>
+        <p data-lang-en>Your easy day should feel embarrassingly easy. Your hard day should leave you questioning your hobby. <span class="highlight">Train easy EASY and hard HARD.</span> The in-between is where progress goes to die.</p>
+        <p data-lang-en>Your Garmin will judge you on easy days. It'll tell you your "training status" is "unproductive." It'll suggest you were "less active than usual." <strong>Ignore it.</strong> Your Garmin doesn't understand periodization. You do now.</p>
+        <p data-lang-en>The runners who get faster are the ones who are brave enough to run slow. Sounds backwards. It's not. It's physiology. And physiology doesn't care about your ego.</p>
+
+        <p data-lang-es>Correr muy duro en los dias faciles y muy facil en los dias duros. Eso es. Ese es el error que comete casi todo corredor.</p>
+        <p data-lang-es>Tu dia facil deberia sentirse vergonzosamente facil. Tu dia duro deberia dejarte cuestionando tu hobby. <span class="highlight">Entrena facil FACIL y duro DURO.</span> El punto medio es donde el progreso va a morir.</p>
+        <p data-lang-es>Tu Garmin te va a juzgar en los dias faciles. Te va a decir que tu "estado de entrenamiento" es "improductivo." Te va a sugerir que estuviste "menos activo de lo usual." <strong>Ignoralo.</strong> Tu Garmin no entiende periodizacion. Tu si, ahora.</p>
+        <p data-lang-es>Los corredores que se vuelven mas rapidos son los que son lo suficientemente valientes para correr lento. Suena al reves. No lo es. Es fisiologia. Y a la fisiologia no le importa tu ego.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="guide-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Ready to train with purpose?</span>
+          <span data-lang-es>Listo para entrenar con proposito?</span>
+        </h2>
+        <p class="guide-cta-sub" data-lang-en>Get a training plan that actually uses zones. Not just "go run." A real plan with easy days, hard days, and a coach who knows the difference.</p>
+        <p class="guide-cta-sub" data-lang-es>Consigue un plan que realmente use zonas. No solo "sal a correr." Un plan real con dias faciles, dias duros, y un coach que sabe la diferencia.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
