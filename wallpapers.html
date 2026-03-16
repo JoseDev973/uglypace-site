@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Wallpapers</title>
+  <meta name="description" content="Free phone wallpapers from Ugly Pace. Pure CSS typography art. Screenshot and suffer in style.">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Page Header ── */
+    .wallpapers-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .wallpapers-header .section-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Wallpaper Grid ── */
+    .wallpapers-section {
+      padding-top: 0;
+    }
+
+    .wallpapers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 32px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .wallpaper-card {
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .wallpaper-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .wallpaper-card:hover .wallpaper-preview {
+      box-shadow: 0 8px 40px rgba(212, 255, 0, 0.15);
+    }
+
+    .wallpaper-preview {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      border: 1px solid rgba(176, 176, 176, 0.15);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .wallpaper-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .wallpaper-tap {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.5);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* ── Wallpaper Inner Designs ── */
+    .wp-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. RUN UGLY. */
+    .wp-run-ugly {
+      background: #0a0a0a;
+      flex-direction: column;
+    }
+
+    .wp-run-ugly .wp-text {
+      font-size: clamp(48px, 15vw, 72px);
+      color: var(--yellow);
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+      text-align: center;
+    }
+
+    .wp-run-ugly .wp-dot {
+      display: inline-block;
+      color: var(--white);
+    }
+
+    .wp-run-ugly::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(212, 255, 0, 0.03) 2px,
+          rgba(212, 255, 0, 0.03) 4px
+        );
+      pointer-events: none;
+    }
+
+    /* 2. DID NOT ENJOY */
+    .wp-did-not-enjoy {
+      background: #0d0d0d;
+      flex-direction: column;
+    }
+
+    .wp-did-not-enjoy .wp-text {
+      font-size: clamp(36px, 12vw, 56px);
+      color: var(--white);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-align: center;
+      text-shadow:
+        2px 2px 0 rgba(0,0,0,0.8),
+        -1px -1px 0 rgba(245,240,235,0.1),
+        3px 0 8px rgba(245,240,235,0.05),
+        0 0 40px rgba(245,240,235,0.03);
+      padding: 0 16px;
+    }
+
+    .wp-did-not-enjoy::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(245,240,235,0.04) 0%, transparent 60%),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(245,240,235,0.015) 3px,
+          rgba(245,240,235,0.015) 4px
+        );
+      pointer-events: none;
+    }
+
+    .wp-did-not-enjoy .wp-scratch {
+      position: absolute;
+      width: 60%;
+      height: 1px;
+      background: rgba(245,240,235,0.08);
+      transform: rotate(-3deg);
+      bottom: 35%;
+    }
+
+    .wp-did-not-enjoy .wp-scratch-2 {
+      position: absolute;
+      width: 40%;
+      height: 1px;
+      background: rgba(245,240,235,0.05);
+      transform: rotate(2deg);
+      top: 30%;
+      right: 10%;
+    }
+
+    /* 3. UGLY PACE CLUB */
+    .wp-ugly-pace-club {
+      background: #0a0a0a;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .wp-ugly-pace-club .wp-line-1 {
+      font-size: clamp(40px, 13vw, 64px);
+      color: var(--white);
+      letter-spacing: 0.1em;
+      line-height: 1;
+    }
+
+    .wp-ugly-pace-club .wp-divider {
+      width: 60%;
+      height: 2px;
+      background: var(--yellow);
+      margin: 8px 0;
+    }
+
+    .wp-ugly-pace-club .wp-line-2 {
+      font-size: clamp(28px, 9vw, 44px);
+      color: var(--white);
+      letter-spacing: 0.2em;
+      line-height: 1;
+    }
+
+    .wp-ugly-pace-club .wp-line-3 {
+      font-size: clamp(40px, 13vw, 64px);
+      color: var(--white);
+      letter-spacing: 0.1em;
+      line-height: 1;
+    }
+
+    .wp-ugly-pace-club::after {
+      content: 'EST. 2026';
+      position: absolute;
+      bottom: 12%;
+      font-size: clamp(10px, 3vw, 14px);
+      letter-spacing: 0.3em;
+      color: rgba(176, 176, 176, 0.3);
+    }
+
+    /* 4. YOUR PACE IS UGLY. OWN IT. */
+    .wp-own-it {
+      background: #0a0a0a;
+      flex-direction: column;
+      padding: 10% 8%;
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .wp-own-it .wp-line {
+      font-size: clamp(28px, 9vw, 44px);
+      color: var(--white);
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+    }
+
+    .wp-own-it .wp-highlight {
+      background: var(--yellow);
+      color: var(--black);
+      padding: 0 6px;
+      display: inline-block;
+    }
+
+    .wp-own-it .wp-line-last {
+      margin-top: 12px;
+      font-size: clamp(36px, 12vw, 56px);
+      color: var(--yellow);
+      letter-spacing: 0.05em;
+    }
+
+    /* 5. NOT FAST. NOT PRETTY. STILL HERE. */
+    .wp-still-here {
+      background: #0a0a0a;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .wp-still-here .wp-text {
+      font-size: clamp(30px, 10vw, 48px);
+      color: var(--white);
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .wp-still-here .wp-text:last-child {
+      color: var(--white);
+      opacity: 1;
+    }
+
+    .wp-still-here .wp-text-dim {
+      opacity: 0.4;
+    }
+
+    .wp-still-here::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      bottom: 15%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(245,240,235,0.1), transparent);
+      pointer-events: none;
+    }
+
+    /* 6. SURVIVE SUNDAY */
+    .wp-survive-sunday {
+      background: #0a0a0a;
+      flex-direction: column;
+    }
+
+    .wp-survive-sunday .wp-text-top {
+      font-size: clamp(48px, 16vw, 76px);
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 0.85;
+      text-align: center;
+    }
+
+    .wp-survive-sunday .wp-text-bottom {
+      font-size: clamp(48px, 16vw, 76px);
+      color: var(--purple);
+      letter-spacing: -0.02em;
+      line-height: 0.85;
+      text-align: center;
+    }
+
+    .wp-survive-sunday::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(123, 45, 142, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .wp-survive-sunday::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--purple), transparent);
+      opacity: 0.4;
+    }
+
+    /* ── Fullscreen Overlay ── */
+    .wallpaper-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: none;
+      background: #000;
+      flex-direction: column;
+    }
+
+    .wallpaper-overlay.active {
+      display: flex;
+    }
+
+    .wallpaper-overlay .wp-fullscreen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overlay-controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+    }
+
+    .overlay-close {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      background: none;
+      border: 2px solid rgba(245,240,235,0.3);
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .overlay-close:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    .overlay-hint {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: rgba(245,240,235,0.5);
+      text-align: right;
+    }
+
+    /* ── Fullscreen wallpaper scaling ── */
+    .wp-fullscreen .wp-text,
+    .wp-fullscreen .wp-line-1,
+    .wp-fullscreen .wp-line-2,
+    .wp-fullscreen .wp-line-3,
+    .wp-fullscreen .wp-line,
+    .wp-fullscreen .wp-line-last,
+    .wp-fullscreen .wp-text-top,
+    .wp-fullscreen .wp-text-bottom {
+      font-size: clamp(48px, 14vw, 120px);
+    }
+
+    .wp-fullscreen.wp-did-not-enjoy .wp-text {
+      font-size: clamp(40px, 12vw, 100px);
+    }
+
+    .wp-fullscreen.wp-ugly-pace-club .wp-line-1,
+    .wp-fullscreen.wp-ugly-pace-club .wp-line-3 {
+      font-size: clamp(56px, 14vw, 120px);
+    }
+
+    .wp-fullscreen.wp-ugly-pace-club .wp-line-2 {
+      font-size: clamp(36px, 9vw, 80px);
+    }
+
+    .wp-fullscreen.wp-ugly-pace-club .wp-divider {
+      height: 3px;
+      margin: 12px 0;
+    }
+
+    .wp-fullscreen.wp-own-it {
+      padding: 10% 8%;
+    }
+
+    .wp-fullscreen.wp-own-it .wp-line {
+      font-size: clamp(36px, 10vw, 80px);
+    }
+
+    .wp-fullscreen.wp-own-it .wp-line-last {
+      font-size: clamp(48px, 14vw, 100px);
+    }
+
+    .wp-fullscreen.wp-own-it .wp-highlight {
+      padding: 0 10px;
+    }
+
+    .wp-fullscreen.wp-still-here .wp-text {
+      font-size: clamp(40px, 12vw, 96px);
+    }
+
+    /* ── CTA Section ── */
+    .wallpapers-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .wallpapers-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .wallpapers-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .wallpapers-header {
+        padding-top: 100px;
+      }
+
+      .wallpapers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      .overlay-controls {
+        padding: 12px 16px;
+      }
+
+      .overlay-hint {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .wallpapers-grid {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html" class="active"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="wallpapers-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Phone Wallpapers</span>
+        <span data-lang-es>Fondos De Pantalla</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>Dress your phone<br>in ugly.</span>
+        <span data-lang-es>Viste tu celular<br>de feo.</span>
+      </h1>
+      <p class="section-sub" data-lang-en>Tap any wallpaper to view full screen. Screenshot it or long-press to save.</p>
+      <p class="section-sub" data-lang-es>Toca cualquier fondo para verlo en pantalla completa. Haz screenshot o manten presionado para guardar.</p>
+    </div>
+  </section>
+
+  <!-- Wallpapers Grid -->
+  <section class="wallpapers-section">
+    <div class="container">
+      <div class="wallpapers-grid">
+
+        <!-- 1. RUN UGLY. -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('run-ugly')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-run-ugly">
+              <div class="wp-text">RUN<br>UGLY<span class="wp-dot">.</span></div>
+            </div>
+          </div>
+          <p class="wallpaper-name">RUN UGLY.</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+        <!-- 2. DID NOT ENJOY -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('did-not-enjoy')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-did-not-enjoy">
+              <div class="wp-text">DID<br>NOT<br>ENJOY</div>
+              <div class="wp-scratch"></div>
+              <div class="wp-scratch-2"></div>
+            </div>
+          </div>
+          <p class="wallpaper-name">DID NOT ENJOY</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+        <!-- 3. UGLY PACE CLUB -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('ugly-pace-club')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-ugly-pace-club">
+              <div class="wp-line-1">UGLY</div>
+              <div class="wp-divider"></div>
+              <div class="wp-line-2">PACE</div>
+              <div class="wp-divider"></div>
+              <div class="wp-line-3">CLUB</div>
+            </div>
+          </div>
+          <p class="wallpaper-name">UGLY PACE CLUB</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+        <!-- 4. YOUR PACE IS UGLY. OWN IT. -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('own-it')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-own-it">
+              <div>
+                <div class="wp-line">YOUR PACE</div>
+                <div class="wp-line">IS <span class="wp-highlight">UGLY</span>.</div>
+                <div class="wp-line wp-line-last">OWN IT.</div>
+              </div>
+            </div>
+          </div>
+          <p class="wallpaper-name">OWN IT.</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+        <!-- 5. NOT FAST. NOT PRETTY. STILL HERE. -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('still-here')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-still-here">
+              <div class="wp-text wp-text-dim">NOT FAST.</div>
+              <div class="wp-text wp-text-dim">NOT PRETTY.</div>
+              <div class="wp-text">STILL HERE.</div>
+            </div>
+          </div>
+          <p class="wallpaper-name">STILL HERE.</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+        <!-- 6. SURVIVE SUNDAY -->
+        <div class="wallpaper-card reveal" onclick="openWallpaper('survive-sunday')">
+          <div class="wallpaper-preview">
+            <div class="wp-inner wp-survive-sunday">
+              <div class="wp-text-top">SURVIVE</div>
+              <div class="wp-text-bottom">SUNDAY</div>
+            </div>
+          </div>
+          <p class="wallpaper-name">SURVIVE SUNDAY</p>
+          <p class="wallpaper-tap">
+            <span data-lang-en>Tap to view</span>
+            <span data-lang-es>Toca para ver</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wallpapers-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Want more ugly?</span>
+          <span data-lang-es>Quieres mas feo?</span>
+        </h2>
+        <p class="wallpapers-cta-sub" data-lang-en>Get a real training plan. No fluff. Just ugly, honest coaching.</p>
+        <p class="wallpapers-cta-sub" data-lang-es>Consigue un plan real. Sin humo. Solo coaching feo y honesto.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Fullscreen Overlay -->
+  <div class="wallpaper-overlay" id="wallpaperOverlay">
+    <div class="overlay-controls">
+      <button class="overlay-close" onclick="closeWallpaper()">CLOSE</button>
+      <div class="overlay-hint">
+        <span data-lang-en>Screenshot this or long-press to save</span>
+        <span data-lang-es>Haz screenshot o manten presionado para guardar</span>
+      </div>
+    </div>
+    <div class="wp-fullscreen" id="wallpaperFullscreen"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Wallpaper templates
+    var wallpaperTemplates = {
+      'run-ugly': '<div class="wp-fullscreen wp-run-ugly" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0a0a0a;flex-direction:column"><div style="position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(212,255,0,0.03) 2px,rgba(212,255,0,0.03) 4px);pointer-events:none"></div><div style="font-size:min(22vw,180px);color:#D4FF00;letter-spacing:-0.02em;line-height:0.9;text-align:center;z-index:1">RUN<br>UGLY<span style="color:#F5F0EB">.</span></div></div>',
+
+      'did-not-enjoy': '<div class="wp-fullscreen wp-did-not-enjoy" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0d0d0d;flex-direction:column"><div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 50%,rgba(245,240,235,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(245,240,235,0.015) 3px,rgba(245,240,235,0.015) 4px);pointer-events:none"></div><div style="font-size:min(18vw,150px);color:#F5F0EB;letter-spacing:0.05em;line-height:1;text-align:center;text-shadow:2px 2px 0 rgba(0,0,0,0.8),-1px -1px 0 rgba(245,240,235,0.1),3px 0 8px rgba(245,240,235,0.05),0 0 40px rgba(245,240,235,0.03);z-index:1;padding:0 24px">DID<br>NOT<br>ENJOY</div><div style="position:absolute;width:60%;height:1px;background:rgba(245,240,235,0.08);transform:rotate(-3deg);bottom:35%"></div><div style="position:absolute;width:40%;height:1px;background:rgba(245,240,235,0.05);transform:rotate(2deg);top:30%;right:10%"></div></div>',
+
+      'ugly-pace-club': '<div class="wp-fullscreen wp-ugly-pace-club" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0a0a0a;flex-direction:column;gap:0"><div style="font-size:min(18vw,140px);color:#F5F0EB;letter-spacing:0.1em;line-height:1">UGLY</div><div style="width:60%;height:3px;background:#D4FF00;margin:12px 0"></div><div style="font-size:min(12vw,100px);color:#F5F0EB;letter-spacing:0.2em;line-height:1">PACE</div><div style="width:60%;height:3px;background:#D4FF00;margin:12px 0"></div><div style="font-size:min(18vw,140px);color:#F5F0EB;letter-spacing:0.1em;line-height:1">CLUB</div><div style="position:absolute;bottom:12%;font-size:min(4vw,18px);letter-spacing:0.3em;color:rgba(176,176,176,0.3)">EST. 2026</div></div>',
+
+      'own-it': '<div class="wp-fullscreen wp-own-it" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0a0a0a;flex-direction:column;padding:10% 8%;text-align:left;align-items:flex-start;justify-content:center"><div><div style="font-size:min(12vw,96px);color:#F5F0EB;letter-spacing:0.02em;line-height:1.15">YOUR PACE</div><div style="font-size:min(12vw,96px);color:#F5F0EB;letter-spacing:0.02em;line-height:1.15">IS <span style="background:#D4FF00;color:#1A1A1A;padding:0 10px;display:inline-block">UGLY</span>.</div><div style="font-size:min(16vw,120px);color:#D4FF00;letter-spacing:0.05em;line-height:1.15;margin-top:16px">OWN IT.</div></div></div>',
+
+      'still-here': '<div class="wp-fullscreen wp-still-here" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0a0a0a;flex-direction:column;gap:16px"><div style="position:absolute;left:50%;top:15%;bottom:15%;width:1px;background:linear-gradient(to bottom,transparent,rgba(245,240,235,0.1),transparent);pointer-events:none"></div><div style="font-size:min(14vw,110px);color:#F5F0EB;letter-spacing:0.08em;line-height:1;text-align:center;opacity:0.4">NOT FAST.</div><div style="font-size:min(14vw,110px);color:#F5F0EB;letter-spacing:0.08em;line-height:1;text-align:center;opacity:0.4">NOT PRETTY.</div><div style="font-size:min(14vw,110px);color:#F5F0EB;letter-spacing:0.08em;line-height:1;text-align:center;opacity:1">STILL HERE.</div></div>',
+
+      'survive-sunday': '<div class="wp-fullscreen wp-survive-sunday" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;position:relative;overflow:hidden;background:#0a0a0a;flex-direction:column"><div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 60%,rgba(123,45,142,0.15) 0%,transparent 70%);pointer-events:none"></div><div style="font-size:min(20vw,160px);color:#F5F0EB;letter-spacing:-0.02em;line-height:0.85;text-align:center;z-index:1">SURVIVE</div><div style="font-size:min(20vw,160px);color:#7B2D8E;letter-spacing:-0.02em;line-height:0.85;text-align:center;z-index:1">SUNDAY</div><div style="position:absolute;bottom:20%;left:20%;right:20%;height:2px;background:linear-gradient(to right,transparent,#7B2D8E,transparent);opacity:0.4"></div></div>'
+    };
+
+    function openWallpaper(id) {
+      var overlay = document.getElementById('wallpaperOverlay');
+      var fullscreen = document.getElementById('wallpaperFullscreen');
+      fullscreen.innerHTML = wallpaperTemplates[id];
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWallpaper() {
+      var overlay = document.getElementById('wallpaperOverlay');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeWallpaper();
+      }
+    });
+
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
