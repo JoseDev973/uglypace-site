@@ -246,6 +246,20 @@
       transition: border-color 0.3s ease;
     }
 
+    .phone-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .phone-row select {
+      width: 140px;
+      flex-shrink: 0;
+    }
+
+    .phone-row input {
+      flex: 1;
+    }
+
     .form-group input::placeholder,
     .form-group textarea::placeholder {
       color: rgba(176, 176, 176, 0.5);
@@ -396,6 +410,10 @@
         margin-right: 12px;
       }
 
+      .phone-row select {
+        width: 120px;
+      }
+
       .lang-switcher {
         top: 16px;
         right: 16px;
@@ -473,7 +491,45 @@
           <label for="whatsapp">WhatsApp</label>
           <p class="form-subtitle" data-lang-en>For when email feels too formal for suffering.</p>
           <p class="form-subtitle" data-lang-es>Para cuando el email es muy formal para el sufrimiento.</p>
-          <input type="tel" id="whatsapp" name="whatsapp" required>
+          <div class="phone-row">
+            <select id="country-code" name="country_code" required>
+              <option value="">Code</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+1">🇨🇦 +1</option>
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+57" selected>🇨🇴 +57</option>
+              <option value="+54">🇦🇷 +54</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+56">🇨🇱 +56</option>
+              <option value="+51">🇵🇪 +51</option>
+              <option value="+593">🇪🇨 +593</option>
+              <option value="+58">🇻🇪 +58</option>
+              <option value="+507">🇵🇦 +507</option>
+              <option value="+506">🇨🇷 +506</option>
+              <option value="+502">🇬🇹 +502</option>
+              <option value="+503">🇸🇻 +503</option>
+              <option value="+591">🇧🇴 +591</option>
+              <option value="+595">🇵🇾 +595</option>
+              <option value="+598">🇺🇾 +598</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+351">🇵🇹 +351</option>
+              <option value="+31">🇳🇱 +31</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+972">🇮🇱 +972</option>
+              <option value="+27">🇿🇦 +27</option>
+              <option value="+234">🇳🇬 +234</option>
+              <option value="+254">🇰🇪 +254</option>
+            </select>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="300 123 4567" required>
+          </div>
         </div>
 
         <!-- 4. Age -->
