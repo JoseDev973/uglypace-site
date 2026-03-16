@@ -414,6 +414,10 @@
         width: 120px;
       }
 
+      .phone-row {
+        flex-wrap: wrap;
+      }
+
       .lang-switcher {
         top: 16px;
         right: 16px;
@@ -657,13 +661,32 @@
 
         <!-- 12. Recent best time -->
         <div class="form-group reveal">
-          <label for="best-time">
+          <label>
             <span data-lang-en>Recent Best Time</span>
             <span data-lang-es>Mejor Tiempo Reciente</span>
           </label>
-          <p class="form-subtitle" data-lang-en>Your best recent time at any distance (5K, 10K, half, marathon). Don't lie, your watch already told us.</p>
-          <p class="form-subtitle" data-lang-es>Tu mejor tiempo reciente en cualquier distancia (5K, 10K, media, maraton). No mientas, tu reloj ya nos dijo.</p>
-          <input type="text" id="best-time" name="best_time" placeholder="e.g. 5K — 28:30">
+          <p class="form-subtitle" data-lang-en>Don't lie, your watch already told us.</p>
+          <p class="form-subtitle" data-lang-es>No mientas, tu reloj ya nos dijo.</p>
+          <div class="phone-row">
+            <select id="best-distance" name="best_distance" style="width: 160px; flex-shrink: 0;">
+              <option value="" disabled selected>
+                Distance
+              </option>
+              <option value="1K">1K</option>
+              <option value="5K">5K</option>
+              <option value="10K">10K</option>
+              <option value="15K">15K</option>
+              <option value="Half Marathon">Half / Media</option>
+              <option value="Marathon">Marathon / Maraton</option>
+              <option value="Ultra">Ultra</option>
+              <option value="None">No tengo / None</option>
+            </select>
+            <input type="text" id="best-hours" name="best_hours" placeholder="HH" style="width: 70px; flex: none; text-align: center;" maxlength="2">
+            <span style="color: var(--gray); font-size: 24px; line-height: 54px;">:</span>
+            <input type="text" id="best-minutes" name="best_minutes" placeholder="MM" style="width: 70px; flex: none; text-align: center;" maxlength="2">
+            <span style="color: var(--gray); font-size: 24px; line-height: 54px;">:</span>
+            <input type="text" id="best-seconds" name="best_seconds" placeholder="SS" style="width: 70px; flex: none; text-align: center;" maxlength="2">
+          </div>
         </div>
 
         <!-- 13. Injuries -->
