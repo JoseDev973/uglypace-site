@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Race Day Survival Kit</title>
+  <meta name="description" content="The race day checklist. What to bring, what to leave at home, and why your ego belongs in neither category.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    li[data-lang-es] { display: none; }
+    li[data-lang-en] { display: list-item; }
+
+    html[lang="es"] li[data-lang-es] { display: list-item; }
+    html[lang="es"] li[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Guide Header ── */
+    .guide-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .guide-header .section-title {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .guide-intro {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Checklist Columns ── */
+    .checklist-section {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .checklist-col h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .checklist-col.bring h2 {
+      color: var(--yellow);
+    }
+
+    .checklist-col.leave h2 {
+      color: var(--purple);
+    }
+
+    .checklist-item {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+    }
+
+    .checklist-item .item-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .checklist-item .item-note {
+      font-size: 15px;
+      color: var(--gray);
+    }
+
+    .checklist-item .item-title::before {
+      margin-right: 10px;
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+    }
+
+    .bring .checklist-item .item-title::before {
+      content: '[ + ]';
+      color: var(--yellow);
+    }
+
+    .leave .checklist-item .item-title::before {
+      content: '[ x ]';
+      color: var(--purple);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 0 auto 48px;
+    }
+
+    /* ── CTA Section ── */
+    .guide-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .guide-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .guide-header {
+        padding-top: 100px;
+      }
+
+      .checklist-grid {
+        grid-template-columns: 1fr;
+        gap: 64px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="guide-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Checklist</span>
+        <span data-lang-es>Checklist</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>Race Day<br>Survival Kit</span>
+        <span data-lang-es>Kit De Supervivencia<br>Race Day</span>
+      </h1>
+      <p class="guide-intro" data-lang-en>Everything you need to bring. Everything you need to leave behind. Print this. Screenshot this. Tattoo it on your arm. You'll still forget something.</p>
+      <p class="guide-intro" data-lang-es>Todo lo que necesitas llevar. Todo lo que necesitas dejar. Imprime esto. Haz screenshot. Tatuatelo en el brazo. Igual se te va a olvidar algo.</p>
+    </div>
+  </section>
+
+  <!-- Checklist -->
+  <section class="checklist-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="checklist-grid">
+
+          <!-- BRING THIS -->
+          <div class="checklist-col bring" data-lang-en>
+            <h2>Bring This</h2>
+
+            <div class="checklist-item">
+              <p class="item-title">Race bib + safety pins</p>
+              <p class="item-note">4 pins, not 2, you animal. A flapping bib is a distraction you don't need when you're already suffering.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">GPS watch, charged</p>
+              <p class="item-note">Not at 3% like last time. Charge it the night before. Then check it in the morning. Then check it again because you're paranoid and that's fine.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Body Glide or vaseline</p>
+              <p class="item-note">Chafing is real and it's coming for you. Inner thighs. Nipples. Armpits. Apply everywhere. Dignity left the chat a long time ago.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Your race shoes</p>
+              <p class="item-note">The ones you trained in. Not the new ones you just bought because they looked fast. Fast-looking shoes don't make you fast. They make you blistered.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Energy gels</p>
+              <p class="item-note">The ones you tested in training. Not the free ones from the expo. Your stomach has trust issues and it should.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Sunscreen</p>
+              <p class="item-note">Sunburned AND slow is not a look. Apply 30 minutes before start. Reapply if it's a long one. Your dermatologist will thank you even if your pace won't.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Change of clothes for after</p>
+              <p class="item-note">You will be disgusting. Soaked, salty, possibly smelling like a gym bag that was left in a car. Fresh clothes are not optional. They're a public service.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Cash or card for post-race food</p>
+              <p class="item-note">You earned those pancakes. Or that burger. Or both. This is not the time for calorie counting. This is the time for celebrating survival.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Your race pacing strategy</p>
+              <p class="item-note">If you have a training plan with a pacing strategy, bring it. Write it on your hand if you have to. Having a plan and ignoring it is better than having no plan at all.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">A plastic bag for your phone</p>
+              <p class="item-note">If it rains, and it will, because the universe has a sense of humor about race day weather. A sandwich bag works. Glamour is not the goal here.</p>
+            </div>
+          </div>
+
+          <!-- LEAVE AT HOME -->
+          <div class="checklist-col leave" data-lang-en>
+            <h2>Leave This At Home</h2>
+
+            <div class="checklist-item">
+              <p class="item-title">Your ego</p>
+              <p class="item-note">It only makes you start too fast, chase people who trained more than you, and blow up by kilometer 3. Your ego does not have a finish line strategy. Leave it on the nightstand.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">New shoes</p>
+              <p class="item-note">Blisters don't care about your aesthetic. That fresh pair looks great in the box. It will look less great when you're limping at km 4 with raw heels.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Untested nutrition</p>
+              <p class="item-note">Your stomach will betray you. That new gel flavor? That energy bar your friend recommended? Save it for a training day. Race day is not for experiments. Race day is for things that work.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">A time goal based on that one good run</p>
+              <p class="item-note">That was a lie. You know the run. That one Tuesday where everything clicked and you ran your "best pace ever." Race day is not Tuesday. Race day has nerves, heat, hills, and 500 people in your way. Set a realistic goal. Then add 2 minutes.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Cotton socks</p>
+              <p class="item-note">Just... no. Cotton holds moisture. Moisture creates friction. Friction creates blisters. Blisters create suffering that has nothing to do with fitness. Technical socks. Non-negotiable.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">The expectation of looking good at the finish line</p>
+              <p class="item-note">You won't. Nobody does. The finish line photo will capture every ounce of suffering on your face. And that's beautiful. In the ugliest possible way. That's the photo you'll frame.</p>
+            </div>
+          </div>
+
+          <!-- BRING THIS - SPANISH -->
+          <div class="checklist-col bring" data-lang-es>
+            <h2>Lleva Esto</h2>
+
+            <div class="checklist-item">
+              <p class="item-title">Dorsal + alfileres de seguridad</p>
+              <p class="item-note">4 alfileres, no 2, animal. Un dorsal flameando es una distraccion que no necesitas cuando ya estas sufriendo.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Reloj GPS, cargado</p>
+              <p class="item-note">No al 3% como la ultima vez. Cargalo la noche anterior. Luego verificalo en la manana. Luego verificalo otra vez porque eres paranoico y esta bien.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Body Glide o vaselina</p>
+              <p class="item-note">Las rozaduras son reales y vienen por ti. Entrepierna. Pezones. Axilas. Aplica en todos lados. La dignidad se fue hace rato.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Tus zapatos de carrera</p>
+              <p class="item-note">Los que usaste para entrenar. No los nuevos que acabas de comprar porque se veian rapidos. Los zapatos que se ven rapidos no te hacen rapido. Te hacen ampollas.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Geles energeticos</p>
+              <p class="item-note">Los que probaste en entrenamiento. No los gratis de la expo. Tu estomago tiene problemas de confianza y con razon.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Bloqueador solar</p>
+              <p class="item-note">Quemado Y lento no es un look. Aplica 30 minutos antes de la salida. Tu dermatologo te lo agradecera aunque tu pace no.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Ropa de cambio para despues</p>
+              <p class="item-note">Vas a estar asqueroso. Empapado, salado, posiblemente oliendo como una maleta de gym que se quedo en un carro. Ropa limpia no es opcional. Es un servicio publico.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Efectivo o tarjeta para comida post-carrera</p>
+              <p class="item-note">Te ganaste esos pancakes. O esa hamburguesa. O ambos. No es momento de contar calorias. Es momento de celebrar la supervivencia.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Tu estrategia de pacing</p>
+              <p class="item-note">Si tienes un plan de entrenamiento con estrategia de pacing, llevala. Escribela en tu mano si es necesario. Tener un plan e ignorarlo es mejor que no tener plan.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Una bolsa plastica para tu telefono</p>
+              <p class="item-note">Si llueve, y va a llover, porque el universo tiene sentido del humor con el clima de las carreras. Una bolsa de sandwich funciona. El glamour no es el objetivo aqui.</p>
+            </div>
+          </div>
+
+          <!-- LEAVE AT HOME - SPANISH -->
+          <div class="checklist-col leave" data-lang-es>
+            <h2>Deja Esto En Casa</h2>
+
+            <div class="checklist-item">
+              <p class="item-title">Tu ego</p>
+              <p class="item-note">Solo te hace arrancar muy rapido, perseguir gente que entreno mas que tu, y explotar en el kilometro 3. Tu ego no tiene estrategia de carrera. Dejalo en la mesa de noche.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Zapatos nuevos</p>
+              <p class="item-note">A las ampollas no les importa tu estetica. Ese par nuevo se ve increible en la caja. Se va a ver menos increible cuando vayas cojeando en el km 4 con los talones en carne viva.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Nutricion sin probar</p>
+              <p class="item-note">Tu estomago te va a traicionar. Ese gel de sabor nuevo? Esa barra energetica que tu amigo recomendo? Guardalo para un dia de entrenamiento. Dia de carrera no es para experimentos. Dia de carrera es para cosas que funcionan.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Una meta de tiempo basada en esa unica buena corrida</p>
+              <p class="item-note">Eso fue mentira. Ya sabes cual. Ese martes donde todo fluyo y corriste tu "mejor ritmo de la vida." Dia de carrera no es martes. Dia de carrera tiene nervios, calor, lomas, y 500 personas en tu camino. Pon una meta realista. Luego sumale 2 minutos.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">Medias de algodon</p>
+              <p class="item-note">Solo... no. El algodon retiene humedad. La humedad crea friccion. La friccion crea ampollas. Las ampollas crean sufrimiento que no tiene nada que ver con tu fitness. Medias tecnicas. No negociable.</p>
+            </div>
+
+            <div class="checklist-item">
+              <p class="item-title">La expectativa de verte bien en la meta</p>
+              <p class="item-note">No te vas a ver bien. Nadie se ve bien. La foto de la meta va a capturar cada gramo de sufrimiento en tu cara. Y eso es hermoso. De la forma mas fea posible. Esa es la foto que vas a enmarcar.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="guide-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Now go race ugly.</span>
+          <span data-lang-es>Ahora ve a correr feo.</span>
+        </h2>
+        <p class="guide-cta-sub" data-lang-en>Want a training plan that actually prepares you for race day? Not just a checklist. A real plan.</p>
+        <p class="guide-cta-sub" data-lang-es>Quieres un plan que realmente te prepare para el dia de la carrera? No solo un checklist. Un plan real.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

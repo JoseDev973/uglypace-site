@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — How To Not Die On Your First 5K</title>
+  <meta name="description" content="A survival guide for your first 5K. No motivational quotes. Just ugly, honest advice that actually works.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    li[data-lang-es] { display: none; }
+    li[data-lang-en] { display: list-item; }
+
+    html[lang="es"] li[data-lang-es] { display: list-item; }
+    html[lang="es"] li[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Guide Header ── */
+    .guide-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .guide-header .section-title {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .guide-intro {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Guide Content ── */
+    .guide-section {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .guide-section h2 .number {
+      color: var(--yellow);
+      margin-right: 8px;
+    }
+
+    .guide-section p {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray);
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .guide-section p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .guide-section .highlight {
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    /* ── Plan Table ── */
+    .plan-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0;
+      margin: 32px 0;
+      max-width: 700px;
+    }
+
+    .plan-week {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      color: var(--yellow);
+      padding: 16px 24px 16px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+      white-space: nowrap;
+    }
+
+    .plan-desc {
+      font-size: 16px;
+      color: var(--gray);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+    }
+
+    .plan-desc strong {
+      color: var(--white);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 0 auto 48px;
+    }
+
+    /* ── CTA Section ── */
+    .guide-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .guide-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .guide-header {
+        padding-top: 100px;
+      }
+
+      .plan-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plan-week {
+        padding: 16px 0 4px;
+        border-bottom: none;
+      }
+
+      .plan-desc {
+        padding: 0 0 16px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="guide-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Survival Guide</span>
+        <span data-lang-es>Guia De Supervivencia</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>How To Not Die<br>On Your First 5K</span>
+        <span data-lang-es>Como No Morir<br>En Tu Primer 5K</span>
+      </h1>
+      <p class="guide-intro" data-lang-en>You signed up for a 5K. Maybe it was the wine talking. Maybe it was peer pressure. Either way, you're doing this. Here's how to survive it.</p>
+      <p class="guide-intro" data-lang-es>Te inscribiste en un 5K. Tal vez fue el vino. Tal vez fue la presion social. Como sea, ya estas metido. Aqui te decimos como sobrevivir.</p>
+    </div>
+  </section>
+
+  <!-- Before You Start -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//01</span>
+          <span data-lang-en>Before You Start</span>
+          <span data-lang-es>Antes De Empezar</span>
+        </h2>
+        <p data-lang-en>You don't need expensive gear. You don't need compression socks. You don't need a hydration vest for 5 kilometers (it's 5K, not the Sahara). You need <strong>shoes that fit</strong> and <strong>the will to leave your couch</strong>. That's it.</p>
+        <p data-lang-en>Go to a running store. Try on shoes. Buy the ones that feel good, not the ones that look good on Instagram. Your feet don't have followers.</p>
+        <p data-lang-en>Wear whatever you already own that isn't cotton. Cotton holds sweat. Sweat causes chafing. Chafing causes regret. Technical fabric. That's the whole lesson.</p>
+
+        <p data-lang-es>No necesitas equipo caro. No necesitas medias de compresion. No necesitas un chaleco de hidratacion para 5 kilometros (son 5K, no el Sahara). Necesitas <strong>zapatos que te queden bien</strong> y <strong>las ganas de levantarte del sofa</strong>. Eso es todo.</p>
+        <p data-lang-es>Ve a una tienda de running. Pruebate zapatos. Compra los que se sientan bien, no los que se ven bien en Instagram. Tus pies no tienen seguidores.</p>
+        <p data-lang-es>Ponte lo que ya tengas que no sea algodon. El algodon retiene sudor. El sudor causa rozaduras. Las rozaduras causan arrepentimiento. Tela tecnica. Esa es toda la leccion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Week 1-4 Plan -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//02</span>
+          <span data-lang-en>The 4-Week Plan</span>
+          <span data-lang-es>El Plan De 4 Semanas</span>
+        </h2>
+        <p data-lang-en>Walk/run intervals. That's the secret. No, seriously. The world's most boring secret that actually works. Start with <strong>2 minutes running, 2 minutes walking</strong>. Repeat until you've done 20-30 minutes. Go home. You're done.</p>
+        <p data-lang-en>No shame in walking. <span class="highlight">The shame is in not starting.</span></p>
+
+        <p data-lang-es>Intervalos de caminar/correr. Ese es el secreto. No, en serio. El secreto mas aburrido del mundo que realmente funciona. Empieza con <strong>2 minutos corriendo, 2 minutos caminando</strong>. Repite hasta completar 20-30 minutos. Vete a casa. Ya terminaste.</p>
+        <p data-lang-es>No hay verguenza en caminar. <span class="highlight">La verguenza esta en no empezar.</span></p>
+
+        <div data-lang-en>
+          <div class="plan-grid">
+            <div class="plan-week">WEEK 1</div>
+            <div class="plan-desc"><strong>2 min run / 2 min walk</strong> x 6-8 rounds. 3 days a week. If you can't talk while running, slow down. If you're dying, walk more. Nobody is watching.</div>
+            <div class="plan-week">WEEK 2</div>
+            <div class="plan-desc"><strong>3 min run / 2 min walk</strong> x 5-6 rounds. Still 3 days. You'll feel slightly less terrible. That's progress.</div>
+            <div class="plan-week">WEEK 3</div>
+            <div class="plan-desc"><strong>4 min run / 1 min walk</strong> x 5 rounds. Your body is adapting. Your brain still hates it. Normal.</div>
+            <div class="plan-week">WEEK 4</div>
+            <div class="plan-desc"><strong>5 min run / 1 min walk</strong> x 4-5 rounds. By now you can run 25 minutes with short breaks. You're ready. Ugly, but ready.</div>
+          </div>
+        </div>
+
+        <div data-lang-es>
+          <div class="plan-grid">
+            <div class="plan-week">SEMANA 1</div>
+            <div class="plan-desc"><strong>2 min corriendo / 2 min caminando</strong> x 6-8 rondas. 3 dias a la semana. Si no puedes hablar mientras corres, ve mas lento. Si te estas muriendo, camina mas. Nadie te esta viendo.</div>
+            <div class="plan-week">SEMANA 2</div>
+            <div class="plan-desc"><strong>3 min corriendo / 2 min caminando</strong> x 5-6 rondas. Todavia 3 dias. Te sentiras un poco menos terrible. Eso es progreso.</div>
+            <div class="plan-week">SEMANA 3</div>
+            <div class="plan-desc"><strong>4 min corriendo / 1 min caminando</strong> x 5 rondas. Tu cuerpo se esta adaptando. Tu cerebro todavia lo odia. Normal.</div>
+            <div class="plan-week">SEMANA 4</div>
+            <div class="plan-desc"><strong>5 min corriendo / 1 min caminando</strong> x 4-5 rondas. A estas alturas puedes correr 25 minutos con pausas cortas. Estas listo. Feo, pero listo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Run/Walk Method -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//03</span>
+          <span data-lang-en>The Run/Walk Method</span>
+          <span data-lang-es>El Metodo Caminar/Correr</span>
+        </h2>
+        <p data-lang-en>This is sometimes called the CaCo method (Caminar/Correr). The concept is dead simple: <strong>alternate between running and walking at planned intervals</strong>. Not because you're giving up. Because you're being smart.</p>
+        <p data-lang-en>Your ego says run the whole thing. Your body says walk. <span class="highlight">Listen to your body. Your ego is an idiot.</span></p>
+        <p data-lang-en>The walking intervals let your heart rate drop, your muscles recover briefly, and your form stay decent. People who use run/walk finish races <strong>with better times</strong> than people who start running and then collapse at kilometer 3 because they went out like they stole something.</p>
+        <p data-lang-en>Even elite ultramarathon runners walk the uphills. If they can walk, so can you. Walk with purpose. Walk with pride. Walk because it's the smart thing to do.</p>
+
+        <p data-lang-es>A esto le llaman el metodo CaCo (Caminar/Correr). El concepto es simple: <strong>alternar entre correr y caminar en intervalos planificados</strong>. No porque te estes rindiendo. Porque estas siendo inteligente.</p>
+        <p data-lang-es>Tu ego dice corre todo. Tu cuerpo dice camina. <span class="highlight">Hazle caso a tu cuerpo. Tu ego es un idiota.</span></p>
+        <p data-lang-es>Los intervalos de caminata dejan que tu frecuencia cardiaca baje, tus musculos se recuperen un poco, y tu forma se mantenga decente. La gente que usa caminar/correr termina carreras <strong>con mejores tiempos</strong> que la gente que empieza corriendo y despues colapsa en el kilometro 3 porque arrancaron como si hubieran robado algo.</p>
+        <p data-lang-es>Hasta los corredores elite de ultramaraton caminan las subidas. Si ellos pueden caminar, tu tambien. Camina con proposito. Camina con orgullo. Camina porque es lo inteligente.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pacing -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//04</span>
+          <span data-lang-en>Pacing</span>
+          <span data-lang-es>Ritmo</span>
+        </h2>
+        <p data-lang-en>Here's the only pacing rule you need for your first 5K:</p>
+        <p data-lang-en><strong>If you can't talk, you're going too fast.</strong> If you can sing, you're not going fast enough. Find the <span class="highlight">"I can complain but not loudly"</span> zone. That's your pace.</p>
+        <p data-lang-en>Your watch will show you a number. Ignore it. For your first 5K, pace doesn't matter. Finishing matters. You can obsess over numbers later. Right now, you just need to cover 5 kilometers without an ambulance.</p>
+        <p data-lang-en>The biggest mistake every beginner makes is starting too fast because of adrenaline. The crowd is cheering, the music is pumping, and suddenly you're running your "best pace ever" for 800 meters. Then reality hits. And it hits hard. <strong>Start slower than you think you should.</strong> If the first kilometer feels easy, good. That's the point.</p>
+
+        <p data-lang-es>Aqui esta la unica regla de ritmo que necesitas para tu primer 5K:</p>
+        <p data-lang-es><strong>Si no puedes hablar, vas muy rapido.</strong> Si puedes cantar, no vas lo suficientemente rapido. Encuentra la zona de <span class="highlight">"puedo quejarme pero no muy fuerte"</span>. Ese es tu ritmo.</p>
+        <p data-lang-es>Tu reloj te va a mostrar un numero. Ignoralo. Para tu primer 5K, el ritmo no importa. Terminar importa. Ya te puedes obsesionar con los numeros despues. Ahora solo necesitas cubrir 5 kilometros sin una ambulancia.</p>
+        <p data-lang-es>El error mas grande de todo principiante es arrancar muy rapido por la adrenalina. La gente esta animando, la musica esta sonando, y de repente estas corriendo tu "mejor ritmo de la vida" por 800 metros. Luego la realidad te pega. Y pega duro. <strong>Empieza mas lento de lo que crees que deberias.</strong> Si el primer kilometro se siente facil, bien. Ese es el punto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Race Day Tips -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//05</span>
+          <span data-lang-en>Race Day Tips</span>
+          <span data-lang-es>Tips Para El Dia De La Carrera</span>
+        </h2>
+        <p data-lang-en><strong>Don't start too fast.</strong> You will anyway. Everyone does. But at least you were warned.</p>
+        <p data-lang-en><strong>Don't try anything new on race day.</strong> Not new shoes. Not new socks. Not that energy gel your friend swears by. Not a new breakfast. Race day is not the day for experiments. Your stomach will make you pay.</p>
+        <p data-lang-en><strong>Go to the bathroom before the race.</strong> And then go again. Trust us on this one. The porta-potty line at kilometer 2 is not where you want to be.</p>
+        <p data-lang-en><strong>Pin your bib the night before.</strong> Use 4 pins. Not 2. A flapping bib at kilometer 4 will become your greatest enemy.</p>
+        <p data-lang-en><strong>Arrive early.</strong> Like, embarrassingly early. You need time to park, pick up your bib if you haven't, find the bathrooms, warm up, and panic quietly. All of this takes longer than you think.</p>
+
+        <p data-lang-es><strong>No arranques muy rapido.</strong> Lo vas a hacer igual. Todos lo hacen. Pero al menos quedas advertido.</p>
+        <p data-lang-es><strong>No estrenes nada el dia de la carrera.</strong> Ni zapatos nuevos. Ni medias nuevas. Ni ese gel energetico que tu amigo jura que es increible. Ni un desayuno nuevo. El dia de carrera no es dia de experimentos. Tu estomago te lo va a cobrar.</p>
+        <p data-lang-es><strong>Ve al bano antes de la carrera.</strong> Y luego ve otra vez. Confia en nosotros. La fila del bano portatil en el kilometro 2 no es donde quieres estar.</p>
+        <p data-lang-es><strong>Pon tu dorsal la noche anterior.</strong> Usa 4 alfileres. No 2. Un dorsal flameando en el kilometro 4 se convertira en tu peor enemigo.</p>
+        <p data-lang-es><strong>Llega temprano.</strong> Tipo, vergonzosamente temprano. Necesitas tiempo para estacionarte, recoger tu dorsal si no lo has hecho, encontrar los banos, calentar, y entrar en panico en silencio. Todo esto toma mas tiempo de lo que crees.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Wall at Km 3 -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//06</span>
+          <span data-lang-en>The Wall At Km 3</span>
+          <span data-lang-es>El Muro Del Km 3</span>
+        </h2>
+        <p data-lang-en>Somewhere around kilometer 3, your body will send a very clear message: <strong>"Stop. This was a mistake. Let's go home."</strong></p>
+        <p data-lang-en>This happens to everyone. Beginners, experienced runners, your neighbor who "runs marathons." Everyone wants to quit at km 3. <span class="highlight">It's normal.</span></p>
+        <p data-lang-en>Here's the thing nobody tells you: <strong>kilometer 4 is easier.</strong> We don't know why. Science probably has an explanation involving endorphins and lactate thresholds. We just know that if you push through km 3, something shifts. Your body stops complaining and starts cooperating. Not happily. But cooperatively.</p>
+        <p data-lang-en>So when km 3 hits and your brain starts listing all the reasons to stop: ignore it. Your brain is lying. It's been lying since km 1. Keep moving. Walk if you need to. But keep moving forward.</p>
+
+        <p data-lang-es>En algun punto alrededor del kilometro 3, tu cuerpo va a enviar un mensaje muy claro: <strong>"Para. Esto fue un error. Vamonos a la casa."</strong></p>
+        <p data-lang-es>Esto le pasa a todos. Principiantes, corredores experimentados, tu vecino que "corre maratones." Todos quieren dejarlo en el km 3. <span class="highlight">Es normal.</span></p>
+        <p data-lang-es>Aqui esta lo que nadie te dice: <strong>el kilometro 4 es mas facil.</strong> No sabemos por que. La ciencia probablemente tiene una explicacion con endorfinas y umbrales de lactato. Solo sabemos que si sobrevives el km 3, algo cambia. Tu cuerpo deja de quejarse y empieza a cooperar. No felizmente. Pero coopera.</p>
+        <p data-lang-es>Asi que cuando el km 3 llegue y tu cerebro empiece a listar todas las razones para parar: ignoralo. Tu cerebro esta mintiendo. Ha estado mintiendo desde el km 1. Sigue avanzando. Camina si necesitas. Pero sigue hacia adelante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- After -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2><span class="number">//07</span>
+          <span data-lang-en>After</span>
+          <span data-lang-es>Despues</span>
+        </h2>
+        <p data-lang-en>You'll cross the finish line. You'll feel terrible for about 10 minutes. Your legs will hurt. You might feel nauseous. You'll wonder why anyone does this voluntarily.</p>
+        <p data-lang-en>Then the endorphins will hit. You'll feel like you conquered something. Because you did.</p>
+        <p data-lang-en>Then, within 24 to 48 hours, something strange will happen. You'll start looking at 10K races. <span class="highlight">It's a disease. There is no cure. Welcome to the club.</span></p>
+        <p data-lang-en><strong>Post-race checklist:</strong> Stretch gently. Drink water. Eat something real. Take a photo you'll never post because you look destroyed. Walk around for 10 minutes before sitting down, or your legs will seize up like a rusty gate. And sign up for the next one before the feeling fades.</p>
+
+        <p data-lang-es>Vas a cruzar la meta. Te vas a sentir terrible por unos 10 minutos. Te van a doler las piernas. Tal vez sientas nauseas. Te vas a preguntar por que alguien hace esto voluntariamente.</p>
+        <p data-lang-es>Luego van a llegar las endorfinas. Vas a sentir que conquistaste algo. Porque lo hiciste.</p>
+        <p data-lang-es>Luego, en las siguientes 24 a 48 horas, algo extrano va a pasar. Vas a empezar a buscar carreras de 10K. <span class="highlight">Es una enfermedad. No tiene cura. Bienvenido al club.</span></p>
+        <p data-lang-es><strong>Checklist post-carrera:</strong> Estira suave. Toma agua. Come algo real. Tomate una foto que nunca vas a publicar porque te ves destruido. Camina 10 minutos antes de sentarte, o tus piernas se van a trabar como puerta oxidada. Y apuntate a la siguiente antes de que se pase la emocion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="guide-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Ready to run ugly?</span>
+          <span data-lang-es>Listo para correr feo?</span>
+        </h2>
+        <p class="guide-cta-sub" data-lang-en>Get a real training plan that takes you from the couch to the finish line. No fluff. Just ugly, honest coaching.</p>
+        <p class="guide-cta-sub" data-lang-es>Consigue un plan real que te lleve del sofa a la meta. Sin humo. Solo coaching feo y honesto.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
