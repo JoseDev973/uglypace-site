@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Run Ugly.</title>
+  <meta name="description" content="The anti-coaching brand. For those who train ugly, run slow, and show up anyway.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseLine {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 1; }
+    }
+
+    @keyframes stampIn {
+      0%   { opacity: 0; transform: scale(1.15); letter-spacing: 0.08em; }
+      60%  { opacity: 1; transform: scale(0.98); letter-spacing: -0.03em; }
+      100% { opacity: 1; transform: scale(1); letter-spacing: -0.02em; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    /* Inline elements */
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    /* List items */
+    li[data-lang-es] { display: none; }
+    li[data-lang-en] { display: list-item; }
+
+    html[lang="es"] li[data-lang-es] { display: list-item; }
+    html[lang="es"] li[data-lang-en] { display: none; }
+
+    /* Links */
+    a[data-lang-es] { display: none; }
+    a[data-lang-en] { display: inline-block; }
+
+    html[lang="es"] a[data-lang-es] { display: inline-block; }
+    html[lang="es"] a[data-lang-en] { display: none; }
+
+    /* Paragraphs */
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    /* Center-aligned paragraphs */
+    .ugly-sunday p[data-lang-en],
+    .ugly-sunday p[data-lang-es],
+    .join p[data-lang-en],
+    .join p[data-lang-es] {
+      /* inherits display from above */
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 60px 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 80px;
+      background: var(--yellow);
+      animation: pulseLine 2.5s ease-in-out infinite;
+    }
+
+    .hero-content {
+      animation: fadeUp 1s ease forwards;
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 18vw, 220px);
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      animation: stampIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .tagline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 56px);
+      color: var(--yellow);
+      margin-top: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--gray);
+      margin-top: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    /* ── Hero CTA ── */
+    .hero-cta {
+      margin-top: 48px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      padding: 18px 48px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .hero-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    .hero-cta-sub {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 0 auto 48px;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Manifesto ── */
+    .manifesto {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .manifesto-lines {
+      list-style: none;
+      max-width: 700px;
+    }
+
+    .manifesto-lines li {
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: var(--gray);
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+      transition: color 0.3s ease;
+    }
+
+    .manifesto-lines li:hover {
+      color: var(--white);
+    }
+
+    .manifesto-lines li::before {
+      content: '//';
+      color: var(--yellow);
+      margin-right: 16px;
+      font-weight: 700;
+    }
+
+    /* ── What We Do ── */
+    .what-we-do {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .what-we-do p {
+      font-size: clamp(18px, 2vw, 22px);
+      color: var(--gray);
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+
+    .what-we-do p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .feature-item {
+      border-left: 3px solid var(--purple);
+      padding-left: 20px;
+    }
+
+    .feature-item h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .feature-item p {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 0;
+    }
+
+    /* ── Ugly Sunday ── */
+    .ugly-sunday {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      text-align: center;
+    }
+
+    .ugly-sunday .section-title {
+      color: var(--yellow);
+    }
+
+    .ugly-sunday-text {
+      font-size: clamp(18px, 2.5vw, 22px);
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .ugly-sunday-rule {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3vw, 32px);
+      color: var(--white);
+      margin-top: 24px;
+    }
+
+    .ugly-sunday-rule span {
+      color: var(--purple);
+    }
+
+    /* ── Levels ── */
+    .levels {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .levels-note {
+      font-size: clamp(18px, 2vw, 22px);
+      color: var(--gray);
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+
+    .levels-note strong {
+      color: var(--white);
+    }
+
+    .requirement {
+      font-size: 16px;
+      color: var(--gray);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.1);
+    }
+
+    .requirement strong {
+      color: var(--yellow);
+    }
+
+    /* ── Pricing ── */
+    .pricing {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      text-align: center;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      max-width: 700px;
+      margin: 0 auto 48px;
+    }
+
+    .pricing-card {
+      border: 2px solid rgba(245, 240, 235, 0.15);
+      padding: 40px 32px;
+      text-align: center;
+      transition: border-color 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      border-color: var(--yellow);
+    }
+
+    .pricing-card h3 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .pricing-card .price {
+      font-family: var(--font-display);
+      font-size: 56px;
+      color: var(--yellow);
+      line-height: 1;
+      margin: 16px 0 4px;
+    }
+
+    .pricing-card .price-period {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 24px;
+    }
+
+    .pricing-card .pricing-desc {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 0;
+      max-width: none;
+    }
+
+    .pricing-cta {
+      margin-top: 16px;
+    }
+
+    .whatsapp-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .whatsapp-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    .pricing-whatsapp-note {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .signup-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: transparent;
+      color: var(--yellow);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      margin-left: 16px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .signup-btn:hover {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Free Resources ── */
+    .resources {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .resource-card {
+      border: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 32px 24px;
+      transition: border-color 0.3s ease;
+    }
+
+    .resource-card:hover {
+      border-color: var(--purple);
+    }
+
+    .resource-tag {
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .resource-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .resource-card p {
+      font-size: 15px;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .resource-link {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .resource-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ── Join ── */
+    .join {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      text-align: center;
+    }
+
+    .join .section-title {
+      margin-bottom: 16px;
+    }
+
+    .join-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 48px;
+    }
+
+    .signup-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .signup-form input[type="email"] {
+      flex: 1;
+      padding: 16px 20px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      background: rgba(245, 240, 235, 0.07);
+      border: 2px solid rgba(245, 240, 235, 0.15);
+      border-right: none;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .signup-form input[type="email"]::placeholder {
+      color: rgba(176, 176, 176, 0.5);
+    }
+
+    .signup-form input[type="email"]:focus {
+      border-color: var(--yellow);
+    }
+
+    .signup-form button {
+      padding: 16px 32px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      background: var(--yellow);
+      color: var(--black);
+      border: 2px solid var(--yellow);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .signup-form button:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .signup-form {
+        flex-direction: column;
+      }
+
+      .signup-form input[type="email"] {
+        border-right: 2px solid rgba(245, 240, 235, 0.15);
+        border-bottom: none;
+      }
+
+      .signup-form input[type="email"]:focus {
+        border-color: var(--yellow);
+      }
+
+      .signup-form button {
+        padding: 18px 32px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .pricing-cta .signup-btn {
+        margin-left: 0;
+        margin-top: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="active"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1 class="wordmark">UGLY PACE</h1>
+      <p class="tagline">
+        <span data-lang-en>Run ugly.</span>
+        <span data-lang-es>Corre horrible.</span>
+      </p>
+      <p class="hero-sub" data-lang-en>Your splits are ugly. You finished. Same thing.</p>
+      <p class="hero-sub" data-lang-es>Tus splits dan pena ajena. Pero terminaste. Same thing.</p>
+      <div class="hero-cta">
+        <a href="join.html" class="hero-btn" data-lang-en>JUST SIGN ME UP</a>
+        <a href="join.html" class="hero-btn" data-lang-es>SOLO INSCRIBEME YA</a>
+        <p class="hero-cta-sub" data-lang-en>Skip the reading. Start the suffering.</p>
+        <p class="hero-cta-sub" data-lang-es>No quiero leer nada. Quiero sufrir ya.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <section class="manifesto">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">
+          <span data-lang-en>Manifesto</span>
+          <span data-lang-es>Manifiesto</span>
+        </p>
+        <div class="divider"></div>
+        <ul class="manifesto-lines">
+          <li data-lang-en>We're not here to unlock your potential.</li>
+          <li data-lang-en>We're here because training hurts, it's ugly, and you showed up anyway.</li>
+          <li data-lang-en>No sunrise runs. No motivational quotes. Just ugly paces and honest coaching.</li>
+          <li data-lang-en>This is the club for everyone who almost didn't go.</li>
+          <li data-lang-en>You don't have to be fast. You just have to not quit.</li>
+
+          <li data-lang-es>No venimos a despertar al atleta que llevas dentro. Ese ya esta sufriendo.</li>
+          <li data-lang-es>Estamos aqui porque entrenar duele, es feo, y aun asi fuiste. Medio dormido, pero fuiste.</li>
+          <li data-lang-es>Sin fotos al amanecer. Sin frases de life coach. Solo ritmos feos y coaching que no te miente.</li>
+          <li data-lang-es>El club de los que casi se quedan en la cama. Otra vez.</li>
+          <li data-lang-es>No necesitas un PR. Solo necesitas no bajarte del plan.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do -->
+  <section class="what-we-do">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">
+          <span data-lang-en>What We Do</span>
+          <span data-lang-es>Que Hacemos</span>
+        </p>
+        <h2 class="section-title">
+          <span data-lang-en>Real coaching.<br>No BS.</span>
+          <span data-lang-es>Coaching real.<br>Sin humo.</span>
+        </h2>
+        <p data-lang-en><strong>AI-powered coaching</strong> for runners and endurance athletes who want structured training plans, honest race pacing, and data that actually means something.</p>
+        <p data-lang-en>We don't sell dreams. We build plans that work when your legs don't want to.</p>
+        <p data-lang-es><strong>Coaching con AI</strong> para corredores y atletas de resistencia que quieren planes que sirvan, pacing honesto, y datos reales.</p>
+        <p data-lang-es>No vendemos humo. Armamos planes que funcionan cuando tus piernas dicen "hoy no, gracias."</p>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <h3>
+              <span data-lang-en>Structured Plans</span>
+              <span data-lang-es>Planes Estructurados</span>
+            </h3>
+            <p data-lang-en>Periodized training built on real data, not vibes.</p>
+            <p data-lang-es>Entrenamiento periodizado con datos reales, no con buena vibra.</p>
+          </div>
+          <div class="feature-item">
+            <h3>
+              <span data-lang-en>Race Pacing</span>
+              <span data-lang-es>Pacing de Carrera</span>
+            </h3>
+            <p data-lang-en>Pacing strategies for the course, not your ego.</p>
+            <p data-lang-es>Estrategia de pacing para el recorrido, no para tu ego.</p>
+          </div>
+          <div class="feature-item">
+            <h3>
+              <span data-lang-en>Real Data</span>
+              <span data-lang-es>Datos Reales</span>
+            </h3>
+            <p data-lang-en>We read the numbers so you can stop guessing.</p>
+            <p data-lang-es>Leemos los numeros para que dejes de inventar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ugly Sunday -->
+  <section class="ugly-sunday">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">
+          <span data-lang-en>Community Ritual</span>
+          <span data-lang-es>Ritual Comunitario</span>
+        </p>
+        <h2 class="section-title">Ugly Sunday</h2>
+        <p class="ugly-sunday-text" data-lang-en>Every Sunday, share your ugliest moment of the week. The worst split. The post-run face. The workout where you almost quit but didn't.</p>
+        <p class="ugly-sunday-text" data-lang-en>No filters. No PRs. Just the real, ugly truth about training.</p>
+        <p class="ugly-sunday-text" data-lang-es>Cada domingo, comparte tu peor momento de la semana. El split que da verguenza. La cara de muerto despues de correr. El dia que casi no sales pero saliste.</p>
+        <p class="ugly-sunday-text" data-lang-es>Sin filtros. Sin PRs. Solo la verdad fea de entrenar.</p>
+        <p class="ugly-sunday-rule">
+          <span data-lang-en>The ugliest wins. <span>Every week.</span></span>
+          <span data-lang-es>El mas feo gana. <span>Todos los domingos.</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Levels & Requirements -->
+  <section class="levels">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">
+          <span data-lang-en>All Levels Welcome</span>
+          <span data-lang-es>Todos los Niveles</span>
+        </p>
+        <h2 class="section-title">
+          <span data-lang-en>From couch<br>to whatever.</span>
+          <span data-lang-es>Del sofa<br>a lo que sea.</span>
+        </h2>
+        <p class="levels-note" data-lang-en>First 5K? Trying to break 4 hours in the marathon? Just trying not to die on your Sunday long run? <strong>We coach all levels.</strong> The only requirement is showing up. Mostly.</p>
+        <p class="levels-note" data-lang-es>Tu primer 5K? Quieres bajar de 4 horas en maraton? Solo quieres sobrevivir la carrera larga del domingo? <strong>Entrenamos todos los niveles.</strong> El unico requisito es aparecer. Mas o menos.</p>
+        <div>
+          <p class="requirement" data-lang-en><strong>TrainingPeaks:</strong> All plans are delivered through TrainingPeaks. It's where the magic (suffering) happens.</p>
+          <p class="requirement" data-lang-en><strong>GPS Watch with HR:</strong> You need a watch that tracks heart rate and distance. Garmin, COROS, Polar, Apple Watch — anything that doesn't lie about your pace. Too much.</p>
+          <p class="requirement" data-lang-es><strong>TrainingPeaks:</strong> Todos los planes van por TrainingPeaks. Ahi es donde pasa la magia (el sufrimiento).</p>
+          <p class="requirement" data-lang-es><strong>Reloj GPS con FC:</strong> Necesitas un reloj que mida frecuencia cardiaca y distancia. Garmin, COROS, Polar, Apple Watch — cualquiera que no mienta tanto sobre tu pace.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">
+          <span data-lang-en>Pricing</span>
+          <span data-lang-es>Precios</span>
+        </p>
+        <h2 class="section-title">
+          <span data-lang-en>Cheaper than<br>your excuses.</span>
+          <span data-lang-es>Mas barato que<br>tus excusas.</span>
+        </h2>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>
+              <span data-lang-en>Running</span>
+              <span data-lang-es>Running</span>
+            </h3>
+            <div class="price">$20</div>
+            <p class="price-period">USD /
+              <span data-lang-en>month</span>
+              <span data-lang-es>mes</span>
+            </p>
+            <p class="pricing-desc" data-lang-en>Structured training plan, race pacing, weekly adjustments. Everything you need to run ugly with purpose.</p>
+            <p class="pricing-desc" data-lang-es>Plan de entrenamiento estructurado, pacing de carrera, ajustes semanales. Todo lo que necesitas para correr horrible con proposito.</p>
+          </div>
+          <div class="pricing-card">
+            <h3>
+              <span data-lang-en>Triathlon</span>
+              <span data-lang-es>Triatlon</span>
+            </h3>
+            <div class="price">$45</div>
+            <p class="price-period">USD /
+              <span data-lang-en>month</span>
+              <span data-lang-es>mes</span>
+            </p>
+            <p class="pricing-desc" data-lang-en>Swim, bike, run — three sports, triple the suffering. Full structured plan across all three disciplines.</p>
+            <p class="pricing-desc" data-lang-es>Nadar, pedalear, correr — tres deportes, triple sufrimiento. Plan estructurado completo en las tres disciplinas.</p>
+          </div>
+        </div>
+        <div class="pricing-cta">
+          <a href="https://wa.me/573168684092?text=Hey%2C%20I%20saw%20your%20site%20and%20I%20want%20to%20run%20ugly.%20My%20current%20pace%20is%20embarrassing%20enough%20to%20qualify.%20Sign%20me%20up." class="whatsapp-btn" data-lang-en>CHAT ON WHATSAPP</a>
+          <a href="https://wa.me/573168684092?text=Hola%2C%20vi%20la%20pagina%20y%20quiero%20correr%20horrible.%20Mi%20pace%20actual%20ya%20es%20lo%20suficientemente%20vergonzoso%20para%20calificar.%20Apuntame." class="whatsapp-btn" data-lang-es>ESCRIBENOS AL WHATSAPP</a>
+          <a href="join.html" class="signup-btn" data-lang-en>SIGN UP</a>
+          <a href="join.html" class="signup-btn" data-lang-es>INSCRIBETE</a>
+          <p class="pricing-whatsapp-note" data-lang-en>Questions? Just text us. We don't bite. We just coach ugly.</p>
+          <p class="pricing-whatsapp-note" data-lang-es>Preguntas? Escribenos. No mordemos. Solo entrenamos feo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        // Auto-detect browser language
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

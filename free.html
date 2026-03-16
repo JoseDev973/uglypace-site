@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Free Resources</title>
+  <meta name="description" content="Free tools, guides, and downloads from Ugly Pace. Because your race entry wasn't free.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Resources Header ── */
+    .resources-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    /* ── Resources Grid ── */
+    .resources-section {
+      padding-top: 0;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .resource-card {
+      border: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 32px 24px;
+      transition: border-color 0.3s ease;
+    }
+
+    .resource-card:hover {
+      border-color: var(--purple);
+    }
+
+    .resource-tag {
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .resource-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .resource-card p {
+      font-size: 15px;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .resource-link {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .resource-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ── CTA Section ── */
+    .free-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .free-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .free-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .resources-header {
+        padding-top: 100px;
+      }
+
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html" class="active"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="resources-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Free Stuff</span>
+        <span data-lang-es>Gratis</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>Free. Because your<br>race entry wasn't.</span>
+        <span data-lang-es>Gratis. Porque la<br>inscripcion no lo fue.</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Resources Grid -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid">
+
+        <!-- 1. Pace Calculator -->
+        <div class="resource-card reveal">
+          <p class="resource-tag">CALCULATOR</p>
+          <h3>
+            <span data-lang-en>How Ugly Is Your Pace?</span>
+            <span data-lang-es>Que Tan Feo Es Tu Pace?</span>
+          </h3>
+          <p data-lang-en>Enter your 5K or 10K time. We'll tell you how ugly it is. No sugar coating.</p>
+          <p data-lang-es>Mete tu tiempo de 5K o 10K. Te decimos que tan feo es. Sin anestesia.</p>
+          <a href="#" class="resource-link">
+            <span data-lang-en>COMING SOON</span>
+            <span data-lang-es>PROXIMAMENTE</span>
+          </a>
+        </div>
+
+        <!-- 2. First 5K Guide -->
+        <div class="resource-card reveal">
+          <p class="resource-tag">GUIDE</p>
+          <h3>
+            <span data-lang-en>How To Not Die On Your First 5K</span>
+            <span data-lang-es>Como No Morir En Tu Primer 5K</span>
+          </h3>
+          <p data-lang-en>A survival guide for your first race. Spoiler: you will want to quit at km 3.</p>
+          <p data-lang-es>Guia de supervivencia para tu primera carrera. Spoiler: vas a querer dejarlo en el km 3.</p>
+          <a href="#" class="resource-link">
+            <span data-lang-en>COMING SOON</span>
+            <span data-lang-es>PROXIMAMENTE</span>
+          </a>
+        </div>
+
+        <!-- 3. Race Day Checklist -->
+        <div class="resource-card reveal">
+          <p class="resource-tag">CHECKLIST</p>
+          <h3>
+            <span data-lang-en>Race Day Survival Kit</span>
+            <span data-lang-es>Kit De Supervivencia Race Day</span>
+          </h3>
+          <p data-lang-en>Everything you need to bring. Everything you'll forget anyway.</p>
+          <p data-lang-es>Todo lo que necesitas llevar. Todo lo que se te va a olvidar igual.</p>
+          <a href="#" class="resource-link">
+            <span data-lang-en>COMING SOON</span>
+            <span data-lang-es>PROXIMAMENTE</span>
+          </a>
+        </div>
+
+        <!-- 4. Training Zones -->
+        <div class="resource-card reveal">
+          <p class="resource-tag">GUIDE</p>
+          <h3>
+            <span data-lang-en>Training Zones For Humans</span>
+            <span data-lang-es>Zonas De Entrenamiento Para Humanos</span>
+          </h3>
+          <p data-lang-en>What zones are, why they matter, and why you've been ignoring them.</p>
+          <p data-lang-es>Que son las zonas, por que importan, y por que las has estado ignorando.</p>
+          <a href="#" class="resource-link">
+            <span data-lang-en>COMING SOON</span>
+            <span data-lang-es>PROXIMAMENTE</span>
+          </a>
+        </div>
+
+        <!-- 5. Wallpapers -->
+        <div class="resource-card reveal">
+          <p class="resource-tag">DOWNLOAD</p>
+          <h3>
+            <span data-lang-en>Ugly Pace Wallpapers</span>
+            <span data-lang-es>Fondos Ugly Pace</span>
+          </h3>
+          <p data-lang-en>Phone wallpapers so ugly they'll motivate you. Or at least remind you to run.</p>
+          <p data-lang-es>Fondos de pantalla tan feos que te van a motivar. O al menos recordarte que tienes que correr.</p>
+          <a href="#" class="resource-link">
+            <span data-lang-en>COMING SOON</span>
+            <span data-lang-es>PROXIMAMENTE</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="free-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Ready to run ugly?</span>
+          <span data-lang-es>Listo para correr feo?</span>
+        </h2>
+        <p class="free-cta-sub" data-lang-en>Get a real training plan. No fluff. Just ugly, honest coaching.</p>
+        <p class="free-cta-sub" data-lang-es>Consigue un plan real. Sin humo. Solo coaching feo y honesto.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

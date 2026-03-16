@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — Join</title>
+  <meta name="description" content="Sign up for Ugly Pace coaching. Fill out the form and start running ugly with purpose.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--yellow);
+      margin: 0 auto 48px;
+    }
+
+    /* ── Form Page Header ── */
+    .form-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .form-header .section-title {
+      margin-bottom: 16px;
+    }
+
+    .form-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── Form Styles ── */
+    .join-form-section {
+      padding-top: 0;
+      padding-bottom: 100px;
+    }
+
+    .join-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 40px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .form-group .form-subtitle {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 16px 20px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      background: rgba(245, 240, 235, 0.07);
+      border: 2px solid rgba(245, 240, 235, 0.15);
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(176, 176, 176, 0.5);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--yellow);
+    }
+
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23B0B0B0' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      padding-right: 48px;
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-submit-btn {
+      display: block;
+      width: 100%;
+      padding: 20px 40px;
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 0.05em;
+      background: var(--yellow);
+      color: var(--black);
+      border: 2px solid var(--yellow);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .form-submit-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Confirmation Message ── */
+    .confirmation {
+      display: none;
+      text-align: center;
+      padding: 80px 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .confirmation.show {
+      display: block;
+    }
+
+    .confirmation h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 56px);
+      line-height: 1;
+      margin-bottom: 24px;
+      color: var(--yellow);
+    }
+
+    .confirmation p {
+      font-size: clamp(18px, 2vw, 22px);
+      color: var(--gray);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .form-header {
+        padding-top: 100px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html" class="active">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="form-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Onboarding</span>
+        <span data-lang-es>Registro</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>Join the ugly side.</span>
+        <span data-lang-es>Pasate al lado feo.</span>
+      </h1>
+      <p class="form-sub" data-lang-en>Fill this out. We'll build your plan. No turning back after this.</p>
+      <p class="form-sub" data-lang-es>Llena esto. Armamos tu plan. Despues de esto no hay vuelta atras.</p>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="join-form-section" id="form-section">
+    <div class="container">
+      <form class="join-form" id="join-form" action="https://formsubmit.co/hello@uglypace.fit" method="POST">
+        <!-- FormSubmit config -->
+        <input type="hidden" name="_subject" value="New Ugly Pace Signup">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+
+        <!-- 1. Name -->
+        <div class="form-group reveal">
+          <label for="name">
+            <span data-lang-en>Name</span>
+            <span data-lang-es>Nombre</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>So we know who to yell at during intervals.</p>
+          <p class="form-subtitle" data-lang-es>Para saber a quien gritarle en los intervalos.</p>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <!-- 2. Email -->
+        <div class="form-group reveal">
+          <label for="email">Email</label>
+          <p class="form-subtitle" data-lang-en>Where we'll send your plan. And occasional guilt trips.</p>
+          <p class="form-subtitle" data-lang-es>Donde te mandamos el plan. Y culpa ocasional.</p>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <!-- 3. WhatsApp -->
+        <div class="form-group reveal">
+          <label for="whatsapp">WhatsApp</label>
+          <p class="form-subtitle" data-lang-en>For when email feels too formal for suffering.</p>
+          <p class="form-subtitle" data-lang-es>Para cuando el email es muy formal para el sufrimiento.</p>
+          <input type="tel" id="whatsapp" name="whatsapp" required>
+        </div>
+
+        <!-- 4. Age -->
+        <div class="form-group reveal">
+          <label for="age">
+            <span data-lang-en>Age</span>
+            <span data-lang-es>Edad</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Just a number. Unless you're over 40, then it's a factor.</p>
+          <p class="form-subtitle" data-lang-es>Solo un numero. A menos que tengas mas de 40, ahi si importa.</p>
+          <input type="number" id="age" name="age" min="10" max="99" required>
+        </div>
+
+        <!-- 5. Weight -->
+        <div class="form-group reveal">
+          <label for="weight">
+            <span data-lang-en>Weight (kg)</span>
+            <span data-lang-es>Peso (kg)</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>We need this for zones. We won't judge. Much.</p>
+          <p class="form-subtitle" data-lang-es>Lo necesitamos para las zonas. No juzgamos. Mucho.</p>
+          <input type="number" id="weight" name="weight_kg" min="30" max="200" required>
+        </div>
+
+        <!-- 6. City -->
+        <div class="form-group reveal">
+          <label for="city">
+            <span data-lang-en>City</span>
+            <span data-lang-es>Ciudad</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Altitude matters. Bogota people, you already have an unfair advantage.</p>
+          <p class="form-subtitle" data-lang-es>La altitud importa. Los de Bogota ya tienen ventaja injusta.</p>
+          <input type="text" id="city" name="city" required>
+        </div>
+
+        <!-- 7. Sport -->
+        <div class="form-group reveal">
+          <label for="sport">
+            <span data-lang-en>Sport</span>
+            <span data-lang-es>Deporte</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Pick your poison.</p>
+          <p class="form-subtitle" data-lang-es>Elige tu veneno.</p>
+          <select id="sport" name="sport" required>
+            <option value="" disabled selected>--</option>
+            <option value="Running">Running</option>
+            <option value="Triathlon">
+              Triathlon / Triatlon
+            </option>
+          </select>
+        </div>
+
+        <!-- 8. Experience Level -->
+        <div class="form-group reveal">
+          <label for="experience">
+            <span data-lang-en>Experience Level</span>
+            <span data-lang-es>Nivel de Experiencia</span>
+          </label>
+          <div data-lang-en>
+            <select id="experience-en" name="experience" required>
+              <option value="" disabled selected>--</option>
+              <option value="Starting from zero">Starting from zero (couch is my best friend)</option>
+              <option value="Less than 1 year">Less than 1 year (still figuring out)</option>
+              <option value="1-3 years">1-3 years (I know what a split is)</option>
+              <option value="3+ years">3+ years (still slow though)</option>
+            </select>
+          </div>
+          <div data-lang-es>
+            <select id="experience-es" name="experience">
+              <option value="" disabled selected>--</option>
+              <option value="Empezando de cero">Empezando de cero (el sofa es mi mejor amigo)</option>
+              <option value="Menos de 1 ano">Menos de 1 ano (todavia no entiendo nada)</option>
+              <option value="1-3 anos">1-3 anos (ya se que es un split)</option>
+              <option value="Mas de 3 anos">Mas de 3 anos (pero sigo lento)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 9. Days per week -->
+        <div class="form-group reveal">
+          <label for="days">
+            <span data-lang-en>Days Available Per Week</span>
+            <span data-lang-es>Dias Disponibles Por Semana</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Be honest. We'll find out anyway when you skip workouts.</p>
+          <p class="form-subtitle" data-lang-es>Se honesto. Nos vamos a dar cuenta cuando te saltes entrenamientos.</p>
+          <select id="days" name="days_per_week" required>
+            <option value="" disabled selected>--</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+
+        <!-- 10. Next race/goal -->
+        <div class="form-group reveal">
+          <label for="goal">
+            <span data-lang-en>Next Race / Goal</span>
+            <span data-lang-es>Proxima Carrera / Objetivo</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Got a race coming up? Or just running from your problems?</p>
+          <p class="form-subtitle" data-lang-es>Tienes alguna carrera? O solo corres de tus problemas?</p>
+          <input type="text" id="goal" name="goal">
+        </div>
+
+        <!-- 11. GPS Watch -->
+        <div class="form-group reveal">
+          <label for="watch">
+            <span data-lang-en>GPS Watch</span>
+            <span data-lang-es>Reloj GPS</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>You need one that tracks HR and distance. No, your phone doesn't count.</p>
+          <p class="form-subtitle" data-lang-es>Necesitas uno que mida FC y distancia. No, el celular no cuenta.</p>
+          <select id="watch" name="gps_watch" required>
+            <option value="" disabled selected>--</option>
+            <option value="Garmin">Garmin</option>
+            <option value="COROS">COROS</option>
+            <option value="Polar">Polar</option>
+            <option value="Apple Watch">Apple Watch</option>
+            <option value="Other">Other</option>
+            <option value="None">I don't have one / No tengo</option>
+          </select>
+        </div>
+
+        <!-- 12. Recent best time -->
+        <div class="form-group reveal">
+          <label for="best-time">
+            <span data-lang-en>Recent Best Time</span>
+            <span data-lang-es>Mejor Tiempo Reciente</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Your best recent time at any distance (5K, 10K, half, marathon). Don't lie, your watch already told us.</p>
+          <p class="form-subtitle" data-lang-es>Tu mejor tiempo reciente en cualquier distancia (5K, 10K, media, maraton). No mientas, tu reloj ya nos dijo.</p>
+          <input type="text" id="best-time" name="best_time" placeholder="e.g. 5K — 28:30">
+        </div>
+
+        <!-- 13. Injuries -->
+        <div class="form-group reveal">
+          <label for="injuries">
+            <span data-lang-en>Injuries or Medical Conditions</span>
+            <span data-lang-es>Lesiones o Condiciones Medicas</span>
+          </label>
+          <p class="form-subtitle" data-lang-en>Anything we should know? Bad knee, bad back, bad life choices that led to a marathon signup?</p>
+          <p class="form-subtitle" data-lang-es>Algo que debamos saber? Rodilla mala, espalda mala, malas decisiones de vida que te llevaron a inscribirte a un maraton?</p>
+          <textarea id="injuries" name="injuries"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-group reveal">
+          <button type="submit" class="form-submit-btn">
+            <span data-lang-en>SEND IT. NO TURNING BACK.</span>
+            <span data-lang-es>ENVIAR. YA NO HAY VUELTA ATRAS.</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Confirmation -->
+      <div class="confirmation" id="confirmation">
+        <h2>
+          <span data-lang-en>Welcome to the ugly side.</span>
+          <span data-lang-es>Bienvenido al lado feo.</span>
+        </h2>
+        <p data-lang-en>We'll be in touch. Start stretching.</p>
+        <p data-lang-es>Te contactamos pronto. Ve estirando.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/uglypace" target="_blank" rel="noopener">@uglypace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+
+      // Sync experience selects — only the visible one should have required
+      var enSelect = document.getElementById('experience-en');
+      var esSelect = document.getElementById('experience-es');
+      if (lang === 'es') {
+        enSelect.removeAttribute('required');
+        enSelect.removeAttribute('name');
+        esSelect.setAttribute('required', '');
+        esSelect.setAttribute('name', 'experience');
+      } else {
+        esSelect.removeAttribute('required');
+        esSelect.removeAttribute('name');
+        enSelect.setAttribute('required', '');
+        enSelect.setAttribute('name', 'experience');
+      }
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        } else {
+          setLang('en');
+        }
+      }
+    });
+
+    // Form submission with confirmation
+    document.getElementById('join-form').addEventListener('submit', function(e) {
+      // If FormSubmit doesn't work (local dev), show confirmation anyway
+      var form = this;
+      var formSection = document.getElementById('form-section');
+
+      // Try FormSubmit first — if it redirects, great.
+      // For local/fallback, show confirmation after a brief moment.
+      setTimeout(function() {
+        form.style.display = 'none';
+        document.getElementById('confirmation').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    });
+  </script>
+
+</body>
+</html>
