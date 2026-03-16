@@ -434,11 +434,62 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 32px;
-      max-width: 700px;
+      max-width: 1060px;
       margin: 0 auto 48px;
     }
+
+    .pricing-card--trial {
+      border-color: var(--yellow);
+      position: relative;
+      background: rgba(212, 255, 0, 0.04);
+    }
+
+    .pricing-card--trial .trial-badge {
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      background: var(--yellow);
+      color: var(--black);
+      padding: 4px 16px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .pricing-card--trial .price {
+      font-size: 64px;
+    }
+
+    .trial-cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.05em;
+      padding: 14px 32px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      margin-top: 20px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .trial-cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* Trial badge and CTA lang overrides */
+    .trial-badge[data-lang-en] { display: inline-block; }
+    .trial-badge[data-lang-es] { display: none; }
+    html[lang="es"] .trial-badge[data-lang-es] { display: inline-block; }
+    html[lang="es"] .trial-badge[data-lang-en] { display: none; }
+
+    .trial-cta-btn[data-lang-en] { display: inline-block; }
+    .trial-cta-btn[data-lang-es] { display: none; }
+    html[lang="es"] .trial-cta-btn[data-lang-es] { display: inline-block; }
+    html[lang="es"] .trial-cta-btn[data-lang-en] { display: none; }
 
     .pricing-card {
       border: 2px solid rgba(245, 240, 235, 0.15);
@@ -903,6 +954,23 @@
           <span data-lang-es>Mas barato que<br>tus excusas.</span>
         </h2>
         <div class="pricing-grid">
+          <div class="pricing-card pricing-card--trial">
+            <span class="trial-badge" data-lang-en>FREE TRIAL</span>
+            <span class="trial-badge" data-lang-es>PRUEBA GRATIS</span>
+            <h3>
+              <span data-lang-en>15 Days</span>
+              <span data-lang-es>15 Dias</span>
+            </h3>
+            <div class="price">$0</div>
+            <p class="price-period">
+              <span data-lang-en>no credit card</span>
+              <span data-lang-es>sin tarjeta</span>
+            </p>
+            <p class="pricing-desc" data-lang-en>15 days to decide if you like suffering with us. Full structured plan, real coaching, real data. No strings. No spam. Just ugly.</p>
+            <p class="pricing-desc" data-lang-es>15 dias para decidir si te gusta sufrir con nosotros. Plan estructurado completo, coaching real, datos reales. Sin letra chiquita. Sin spam. Solo feo.</p>
+            <a href="https://wa.me/573168684092?text=Hey%2C%20I%20want%20to%20try%20the%2015-day%20free%20trial.%20Let%27s%20see%20if%20I%20survive." class="trial-cta-btn" data-lang-en>START FREE TRIAL</a>
+            <a href="https://wa.me/573168684092?text=Hola%2C%20quiero%20probar%20los%2015%20dias%20gratis.%20A%20ver%20si%20sobrevivo." class="trial-cta-btn" data-lang-es>EMPIEZA GRATIS</a>
+          </div>
           <div class="pricing-card">
             <h3>
               <span data-lang-en>Running</span>
