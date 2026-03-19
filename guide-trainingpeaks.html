@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGLY PACE — TrainingPeaks Setup Guide</title>
+  <meta name="description" content="Step-by-step guide to set up TrainingPeaks on your phone and sync with Apple Watch, Garmin, COROS, or Polar.">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --black: #1A1A1A;
+      --gray: #B0B0B0;
+      --white: #F5F0EB;
+      --yellow: #D4FF00;
+      --purple: #7B2D8E;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── Base ── */
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+    }
+
+    .nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin-right: 16px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: var(--yellow);
+    }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      border: 2px solid rgba(245, 240, 235, 0.2);
+    }
+
+    .lang-btn {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--white);
+    }
+
+    /* ── Language visibility ── */
+    [data-lang-es] { display: none; }
+    [data-lang-en] { display: block; }
+
+    html[lang="es"] [data-lang-es] { display: block; }
+    html[lang="es"] [data-lang-en] { display: none; }
+
+    span[data-lang-es] { display: none; }
+    span[data-lang-en] { display: inline; }
+
+    html[lang="es"] span[data-lang-es] { display: inline; }
+    html[lang="es"] span[data-lang-en] { display: none; }
+
+    p[data-lang-es] { display: none; }
+    p[data-lang-en] { display: block; }
+
+    html[lang="es"] p[data-lang-es] { display: block; }
+    html[lang="es"] p[data-lang-en] { display: none; }
+
+    li[data-lang-es] { display: none; }
+    li[data-lang-en] { display: list-item; }
+
+    html[lang="es"] li[data-lang-es] { display: list-item; }
+    html[lang="es"] li[data-lang-en] { display: none; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Section Titles ── */
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Guide Header ── */
+    .guide-header {
+      padding-top: 120px;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+
+    .guide-header .section-title {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .guide-intro {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Device Picker ── */
+    .device-picker {
+      text-align: center;
+      padding: 60px 0 0;
+    }
+
+    .picker-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 24px;
+    }
+
+    .picker-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .picker-btn {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 3vw, 24px);
+      letter-spacing: 0.05em;
+      padding: 16px 32px;
+      background: transparent;
+      color: var(--gray);
+      border: 2px solid rgba(176, 176, 176, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .picker-btn:hover {
+      border-color: var(--yellow);
+      color: var(--white);
+    }
+
+    .picker-btn.active {
+      background: var(--yellow);
+      color: var(--black);
+      border-color: var(--yellow);
+    }
+
+    /* ── Guide Content ── */
+    .guide-section {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .guide-section p,
+    .device-content p {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray);
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .guide-section p strong,
+    .device-content p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .guide-section .highlight,
+    .device-content .highlight {
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    /* ── Device Content ── */
+    .device-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .device-content.active {
+      display: block;
+    }
+
+    .device-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .device-sync-via {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 0.1em;
+      color: var(--purple);
+      margin-bottom: 24px;
+    }
+
+    /* ── Steps List ── */
+    .steps {
+      list-style: none;
+      counter-reset: step-counter;
+      max-width: 700px;
+      margin-bottom: 24px;
+    }
+
+    .steps li {
+      counter-increment: step-counter;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(176, 176, 176, 0.08);
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray);
+      padding-left: 48px;
+      position: relative;
+    }
+
+    .steps li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 16px;
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .steps li strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── Tip Box ── */
+    .tip-box {
+      border-left: 3px solid var(--yellow);
+      padding: 16px 24px;
+      margin: 24px 0;
+      max-width: 700px;
+      background: rgba(212, 255, 0, 0.03);
+    }
+
+    .tip-box p {
+      margin-bottom: 0;
+    }
+
+    .tip-label {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+
+    /* ── Feature Badge ── */
+    .features-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .feature-badge {
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      padding: 6px 14px;
+      border: 1px solid rgba(176, 176, 176, 0.2);
+      color: var(--gray);
+    }
+
+    .feature-badge.yes {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    .feature-badge.no {
+      border-color: rgba(176, 176, 176, 0.15);
+      color: rgba(176, 176, 176, 0.4);
+    }
+
+    /* ── CTA Section ── */
+    .guide-cta {
+      text-align: center;
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+    }
+
+    .guide-cta .section-title {
+      margin-bottom: 16px;
+    }
+
+    .guide-cta-sub {
+      color: var(--gray);
+      font-size: clamp(16px, 2vw, 20px);
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      padding: 16px 40px;
+      background: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: transparent;
+      color: var(--yellow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(176, 176, 176, 0.15);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-nav {
+      margin-bottom: 24px;
+    }
+
+    .footer-nav a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-social {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .footer-social a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--yellow);
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(176, 176, 176, 0.4);
+      margin-top: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section {
+        padding: 72px 0;
+      }
+
+      .guide-header {
+        padding-top: 100px;
+      }
+
+      .nav {
+        top: 16px;
+        left: 16px;
+      }
+
+      .nav a {
+        font-size: 14px;
+        margin-right: 12px;
+      }
+
+      .lang-switcher {
+        top: 16px;
+        right: 16px;
+      }
+
+      .lang-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      .picker-btn {
+        min-width: 120px;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+    <a href="join.html">JOIN</a>
+    <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+  </nav>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <!-- Header -->
+  <section class="guide-header">
+    <div class="container">
+      <p class="section-label">
+        <span data-lang-en>Setup Guide</span>
+        <span data-lang-es>Guia de Configuracion</span>
+      </p>
+      <h1 class="section-title">
+        <span data-lang-en>TrainingPeaks<br>Setup Guide</span>
+        <span data-lang-es>Como Configurar<br>TrainingPeaks</span>
+      </h1>
+      <p class="guide-intro" data-lang-en>Step-by-step instructions to install TrainingPeaks on your phone and sync your watch so your workouts show up automatically.</p>
+      <p class="guide-intro" data-lang-es>Instrucciones paso a paso para instalar TrainingPeaks en tu telefono y sincronizar tu reloj para que tus entrenamientos aparezcan automaticamente.</p>
+    </div>
+  </section>
+
+  <!-- Step 1: Download & Account -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>Step 1 — Download & Log In</span>
+          <span data-lang-es>Paso 1 — Descargar e Iniciar Sesion</span>
+        </h2>
+        <p data-lang-en>Download the <strong>TrainingPeaks</strong> app from the App Store (iPhone) or Google Play (Android). The app is free.</p>
+        <p data-lang-es>Descarga la app de <strong>TrainingPeaks</strong> desde la App Store (iPhone) o Google Play (Android). La app es gratuita.</p>
+
+        <ol class="steps">
+          <li data-lang-en>Open the App Store or Google Play and search <strong>"TrainingPeaks"</strong></li>
+          <li data-lang-en>Download and install the app</li>
+          <li data-lang-en>Open the app and log in with the email and password from your welcome email</li>
+          <li data-lang-en>You should see your training calendar with your upcoming workouts</li>
+
+          <li data-lang-es>Abre la App Store o Google Play y busca <strong>"TrainingPeaks"</strong></li>
+          <li data-lang-es>Descarga e instala la app</li>
+          <li data-lang-es>Abre la app e inicia sesion con el email y contrasena de tu correo de bienvenida</li>
+          <li data-lang-es>Deberias ver tu calendario de entrenamiento con tus proximos entrenamientos</li>
+        </ol>
+
+        <div class="tip-box">
+          <p class="tip-label">TIP</p>
+          <p data-lang-en>If you don't have an account yet, your coach will create one for you. Check your email for an invitation from TrainingPeaks.</p>
+          <p data-lang-es>Si aun no tienes cuenta, tu coach te creara una. Revisa tu email por una invitacion de TrainingPeaks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2: Pick Your Watch -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>Step 2 — Sync Your Watch</span>
+          <span data-lang-es>Paso 2 — Sincronizar Tu Reloj</span>
+        </h2>
+        <p data-lang-en>Select your watch to see the specific setup instructions.</p>
+        <p data-lang-es>Selecciona tu reloj para ver las instrucciones especificas.</p>
+
+        <!-- Device Picker -->
+        <div class="picker-buttons" style="margin-bottom: 48px; justify-content: flex-start;">
+          <button class="picker-btn" onclick="selectDevice('garmin')">GARMIN</button>
+          <button class="picker-btn" onclick="selectDevice('coros')">COROS</button>
+          <button class="picker-btn" onclick="selectDevice('apple')">APPLE WATCH</button>
+          <button class="picker-btn" onclick="selectDevice('polar')">POLAR</button>
+        </div>
+
+        <!-- ═══════ GARMIN ═══════ -->
+        <div class="device-content" data-device="garmin">
+          <h2>Garmin</h2>
+          <p class="device-sync-via">
+            <span data-lang-en>Sync via Garmin Connect</span>
+            <span data-lang-es>Sincronizar via Garmin Connect</span>
+          </p>
+
+          <div class="features-row">
+            <span class="feature-badge yes" data-lang-en>STRUCTURED WORKOUTS ON WATCH</span>
+            <span class="feature-badge yes" data-lang-en>PACE TARGETS PER INTERVAL</span>
+            <span class="feature-badge yes" data-lang-en>WORKS WITH ANDROID</span>
+            <span class="feature-badge yes" data-lang-es>ENTRENAMIENTOS ESTRUCTURADOS EN RELOJ</span>
+            <span class="feature-badge yes" data-lang-es>OBJETIVOS DE RITMO POR INTERVALO</span>
+            <span class="feature-badge yes" data-lang-es>FUNCIONA CON ANDROID</span>
+          </div>
+
+          <p data-lang-en>Garmin watches sync through <strong>Garmin Connect</strong>. Once linked, completed workouts upload automatically and <span class="highlight">structured workouts push directly to your watch</span>.</p>
+          <p data-lang-es>Los relojes Garmin sincronizan a traves de <strong>Garmin Connect</strong>. Una vez vinculados, los entrenamientos completados se suben automaticamente y <span class="highlight">los entrenamientos estructurados se envian directo a tu reloj</span>.</p>
+
+          <ol class="steps">
+            <li data-lang-en>Make sure the <strong>Garmin Connect</strong> app is installed on your phone and your watch is paired</li>
+            <li data-lang-en>Open <strong>TrainingPeaks</strong> on your phone</li>
+            <li data-lang-en>Go to <strong>Settings</strong> (gear icon) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-en>Tap <strong>Garmin</strong> and authorize the connection with your Garmin Connect credentials</li>
+            <li data-lang-en>Enable <strong>"Send planned workouts to device"</strong> — this pushes your structured workouts to the watch</li>
+            <li data-lang-en>Sync your Garmin watch — scheduled workouts will appear in <strong>Training > Training Calendar</strong> on your watch</li>
+
+            <li data-lang-es>Asegurate de tener la app <strong>Garmin Connect</strong> instalada en tu telefono y tu reloj vinculado</li>
+            <li data-lang-es>Abre <strong>TrainingPeaks</strong> en tu telefono</li>
+            <li data-lang-es>Ve a <strong>Ajustes</strong> (icono de engranaje) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-es>Toca <strong>Garmin</strong> y autoriza la conexion con tus credenciales de Garmin Connect</li>
+            <li data-lang-es>Activa <strong>"Send planned workouts to device"</strong> — esto envia tus entrenamientos estructurados al reloj</li>
+            <li data-lang-es>Sincroniza tu reloj Garmin — los entrenamientos programados apareceran en <strong>Entrenamiento > Calendario de entrenamiento</strong> en tu reloj</li>
+          </ol>
+
+          <div class="tip-box">
+            <p class="tip-label">TIP</p>
+            <p data-lang-en>Garmin watches display pace and heart rate targets for each interval during your workout. Just start the workout from the Training Calendar on your watch and follow the prompts.</p>
+            <p data-lang-es>Los relojes Garmin muestran objetivos de ritmo y frecuencia cardiaca para cada intervalo durante tu entrenamiento. Solo inicia el entrenamiento desde el Calendario de Entrenamiento en tu reloj y sigue las indicaciones.</p>
+          </div>
+        </div>
+
+        <!-- ═══════ COROS ═══════ -->
+        <div class="device-content" data-device="coros">
+          <h2>COROS</h2>
+          <p class="device-sync-via">
+            <span data-lang-en>Sync via COROS App</span>
+            <span data-lang-es>Sincronizar via COROS App</span>
+          </p>
+
+          <div class="features-row">
+            <span class="feature-badge yes" data-lang-en>STRUCTURED WORKOUTS ON WATCH</span>
+            <span class="feature-badge yes" data-lang-en>PACE TARGETS PER INTERVAL</span>
+            <span class="feature-badge yes" data-lang-en>WORKS WITH ANDROID</span>
+            <span class="feature-badge yes" data-lang-es>ENTRENAMIENTOS ESTRUCTURADOS EN RELOJ</span>
+            <span class="feature-badge yes" data-lang-es>OBJETIVOS DE RITMO POR INTERVALO</span>
+            <span class="feature-badge yes" data-lang-es>FUNCIONA CON ANDROID</span>
+          </div>
+
+          <p data-lang-en>COROS watches sync through the <strong>COROS app</strong>. Completed workouts upload automatically, and <span class="highlight">structured workouts push directly to your watch</span>.</p>
+          <p data-lang-es>Los relojes COROS sincronizan a traves de la <strong>app COROS</strong>. Los entrenamientos completados se suben automaticamente, y <span class="highlight">los entrenamientos estructurados se envian directo a tu reloj</span>.</p>
+
+          <ol class="steps">
+            <li data-lang-en>Make sure the <strong>COROS</strong> app is installed and your watch is paired</li>
+            <li data-lang-en>Open <strong>TrainingPeaks</strong> on your phone</li>
+            <li data-lang-en>Go to <strong>Settings</strong> (gear icon) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-en>Tap <strong>COROS</strong> and authorize the connection with your COROS account</li>
+            <li data-lang-en>Enable <strong>"Send planned workouts to device"</strong></li>
+            <li data-lang-en>Sync your COROS watch — scheduled workouts will appear in the workout list on your watch</li>
+
+            <li data-lang-es>Asegurate de tener la app <strong>COROS</strong> instalada y tu reloj vinculado</li>
+            <li data-lang-es>Abre <strong>TrainingPeaks</strong> en tu telefono</li>
+            <li data-lang-es>Ve a <strong>Ajustes</strong> (icono de engranaje) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-es>Toca <strong>COROS</strong> y autoriza la conexion con tu cuenta COROS</li>
+            <li data-lang-es>Activa <strong>"Send planned workouts to device"</strong></li>
+            <li data-lang-es>Sincroniza tu reloj COROS — los entrenamientos programados apareceran en la lista de entrenamientos de tu reloj</li>
+          </ol>
+
+          <div class="tip-box">
+            <p class="tip-label">TIP</p>
+            <p data-lang-en>COROS watches display pace targets per interval, just like Garmin. Your watch will guide you through each step of the workout with alerts when you need to speed up or slow down.</p>
+            <p data-lang-es>Los relojes COROS muestran objetivos de ritmo por intervalo, igual que Garmin. Tu reloj te guiara por cada paso del entrenamiento con alertas cuando necesites acelerar o bajar el ritmo.</p>
+          </div>
+        </div>
+
+        <!-- ═══════ APPLE WATCH ═══════ -->
+        <div class="device-content" data-device="apple">
+          <h2>Apple Watch</h2>
+          <p class="device-sync-via">
+            <span data-lang-en>Sync via Apple Health + native Workout app</span>
+            <span data-lang-es>Sincronizar via Apple Health + app nativa Workout</span>
+          </p>
+
+          <div class="features-row">
+            <span class="feature-badge yes" data-lang-en>STRUCTURED WORKOUTS ON WATCH</span>
+            <span class="feature-badge yes" data-lang-en>PACE / HR / POWER TARGETS</span>
+            <span class="feature-badge no" data-lang-en>iPHONE ONLY</span>
+            <span class="feature-badge yes" data-lang-es>ENTRENAMIENTOS ESTRUCTURADOS EN RELOJ</span>
+            <span class="feature-badge yes" data-lang-es>OBJETIVOS DE RITMO / FC / POTENCIA</span>
+            <span class="feature-badge no" data-lang-es>SOLO iPHONE</span>
+          </div>
+
+          <p data-lang-en>Apple Watch syncs structured workouts directly to the native <strong>Workout</strong> app via Apple Health. Your intervals, pace targets, and HR zones show up on your wrist. Requires <strong>watchOS 10.2+</strong> and <strong>Apple Watch Series 4 or later</strong>.</p>
+          <p data-lang-es>Apple Watch sincroniza los entrenamientos estructurados directamente a la app nativa <strong>Workout</strong> via Apple Health. Tus intervalos, objetivos de ritmo y zonas de FC aparecen en tu muneca. Requiere <strong>watchOS 10.2+</strong> y <strong>Apple Watch Series 4 o posterior</strong>.</p>
+
+          <ol class="steps">
+            <li data-lang-en>Open the <strong>TrainingPeaks</strong> app on your iPhone</li>
+            <li data-lang-en>Go to <strong>Settings</strong> (gear icon) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-en>Tap <strong>Apple Health</strong> and enable all permissions (heart rate, workouts, etc.)</li>
+            <li data-lang-en>Your structured workouts will automatically sync to the <strong>Workout</strong> app on your Apple Watch</li>
+            <li data-lang-en>On your watch, open the <strong>Workout</strong> app — you'll see your planned workouts with all intervals and targets</li>
+            <li data-lang-en>Start the workout from the watch and follow the guided intervals</li>
+            <li data-lang-en>After your workout, data syncs back to TrainingPeaks automatically</li>
+
+            <li data-lang-es>Abre la app de <strong>TrainingPeaks</strong> en tu iPhone</li>
+            <li data-lang-es>Ve a <strong>Ajustes</strong> (icono de engranaje) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-es>Toca <strong>Apple Health</strong> y activa todos los permisos (frecuencia cardiaca, entrenamientos, etc.)</li>
+            <li data-lang-es>Tus entrenamientos estructurados se sincronizaran automaticamente a la app <strong>Workout</strong> en tu Apple Watch</li>
+            <li data-lang-es>En tu reloj, abre la app <strong>Workout</strong> — veras tus entrenamientos planificados con todos los intervalos y objetivos</li>
+            <li data-lang-es>Inicia el entrenamiento desde el reloj y sigue los intervalos guiados</li>
+            <li data-lang-es>Despues de tu entrenamiento, los datos se sincronizan de vuelta a TrainingPeaks automaticamente</li>
+          </ol>
+
+          <div class="tip-box">
+            <p class="tip-label">
+              <span data-lang-en>REQUIREMENTS</span>
+              <span data-lang-es>REQUISITOS</span>
+            </p>
+            <p data-lang-en>The workout must have structured intervals with pace, HR, or power targets (not RPE). Make sure your Apple Watch is running <strong>watchOS 10.2 or later</strong> — go to Watch app > General > Software Update to check.</p>
+            <p data-lang-es>El entrenamiento debe tener intervalos estructurados con objetivos de ritmo, FC o potencia (no RPE). Asegurate de que tu Apple Watch tenga <strong>watchOS 10.2 o posterior</strong> — ve a la app Watch > General > Actualizacion de Software para verificar.</p>
+          </div>
+        </div>
+
+        <!-- ═══════ POLAR ═══════ -->
+        <div class="device-content" data-device="polar">
+          <h2>Polar</h2>
+          <p class="device-sync-via">
+            <span data-lang-en>Sync via Polar Flow</span>
+            <span data-lang-es>Sincronizar via Polar Flow</span>
+          </p>
+
+          <div class="features-row">
+            <span class="feature-badge no" data-lang-en>NO STRUCTURED WORKOUTS ON WATCH</span>
+            <span class="feature-badge no" data-lang-en>NO PACE TARGETS ON WATCH</span>
+            <span class="feature-badge yes" data-lang-en>WORKS WITH ANDROID</span>
+            <span class="feature-badge no" data-lang-es>SIN ENTRENAMIENTOS ESTRUCTURADOS EN RELOJ</span>
+            <span class="feature-badge no" data-lang-es>SIN OBJETIVOS DE RITMO EN RELOJ</span>
+            <span class="feature-badge yes" data-lang-es>FUNCIONA CON ANDROID</span>
+          </div>
+
+          <p data-lang-en>Polar watches sync through <strong>Polar Flow</strong>. Completed workouts upload automatically to TrainingPeaks.</p>
+          <p data-lang-es>Los relojes Polar sincronizan a traves de <strong>Polar Flow</strong>. Los entrenamientos completados se suben automaticamente a TrainingPeaks.</p>
+
+          <ol class="steps">
+            <li data-lang-en>Make sure the <strong>Polar Flow</strong> app is installed and your watch is paired</li>
+            <li data-lang-en>Open <strong>TrainingPeaks</strong> on your phone</li>
+            <li data-lang-en>Go to <strong>Settings</strong> (gear icon) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-en>Tap <strong>Polar</strong> and authorize the connection with your Polar Flow credentials</li>
+            <li data-lang-en>After your workout, sync your Polar watch with the Polar Flow app — the workout will then sync to TrainingPeaks</li>
+
+            <li data-lang-es>Asegurate de tener la app <strong>Polar Flow</strong> instalada y tu reloj vinculado</li>
+            <li data-lang-es>Abre <strong>TrainingPeaks</strong> en tu telefono</li>
+            <li data-lang-es>Ve a <strong>Ajustes</strong> (icono de engranaje) > <strong>Connected Apps & Devices</strong></li>
+            <li data-lang-es>Toca <strong>Polar</strong> y autoriza la conexion con tus credenciales de Polar Flow</li>
+            <li data-lang-es>Despues de tu entrenamiento, sincroniza tu reloj Polar con la app Polar Flow — el entrenamiento se sincronizara con TrainingPeaks</li>
+          </ol>
+
+          <div class="tip-box">
+            <p class="tip-label">
+              <span data-lang-en>NOTE</span>
+              <span data-lang-es>NOTA</span>
+            </p>
+            <p data-lang-en>Polar does <strong>not</strong> receive structured workouts from TrainingPeaks directly on the watch. You'll need to check your workout details in the TrainingPeaks app before starting, similar to Apple Watch.</p>
+            <p data-lang-es>Polar <strong>no</strong> recibe entrenamientos estructurados de TrainingPeaks directamente en el reloj. Necesitaras revisar los detalles de tu entrenamiento en la app de TrainingPeaks antes de empezar, similar a Apple Watch.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Troubleshooting -->
+  <section class="guide-section">
+    <div class="container">
+      <div class="reveal">
+        <h2>
+          <span data-lang-en>Troubleshooting</span>
+          <span data-lang-es>Problemas Comunes</span>
+        </h2>
+
+        <p data-lang-en><strong>Workouts not syncing?</strong></p>
+        <p data-lang-en>Open the TrainingPeaks app and pull down to refresh. Make sure your watch app (Garmin Connect, COROS, Polar Flow) has synced first. The chain is: Watch > Watch App > TrainingPeaks.</p>
+
+        <p data-lang-es><strong>Los entrenamientos no se sincronizan?</strong></p>
+        <p data-lang-es>Abre la app de TrainingPeaks y desliza hacia abajo para actualizar. Asegurate de que la app de tu reloj (Garmin Connect, COROS, Polar Flow) se haya sincronizado primero. La cadena es: Reloj > App del Reloj > TrainingPeaks.</p>
+
+        <p data-lang-en><strong>Structured workout not on watch? (Garmin/COROS)</strong></p>
+        <p data-lang-en>Make sure "Send planned workouts to device" is enabled in TrainingPeaks settings. Then sync your watch. Workouts typically sync for the next 3-5 days.</p>
+
+        <p data-lang-es><strong>El entrenamiento estructurado no aparece en el reloj? (Garmin/COROS)</strong></p>
+        <p data-lang-es>Asegurate de que "Send planned workouts to device" este activado en los ajustes de TrainingPeaks. Luego sincroniza tu reloj. Los entrenamientos normalmente se sincronizan para los proximos 3-5 dias.</p>
+
+        <p data-lang-en><strong>Duplicate workouts?</strong></p>
+        <p data-lang-en>This usually happens when multiple sync sources are enabled (e.g., both Garmin and Apple Health). Use only one sync source per device.</p>
+
+        <p data-lang-es><strong>Entrenamientos duplicados?</strong></p>
+        <p data-lang-es>Esto pasa normalmente cuando hay multiples fuentes de sincronizacion habilitadas (ej., tanto Garmin como Apple Health). Usa solo una fuente de sincronizacion por dispositivo.</p>
+
+        <div class="tip-box">
+          <p class="tip-label">
+            <span data-lang-en>STILL STUCK?</span>
+            <span data-lang-es>SIGUES CON PROBLEMAS?</span>
+          </p>
+          <p data-lang-en>Send your coach a message with a screenshot. We'll sort it out.</p>
+          <p data-lang-es>Enviale un mensaje a tu coach con un screenshot. Lo resolvemos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="guide-cta">
+    <div class="container">
+      <div class="reveal">
+        <h2 class="section-title">
+          <span data-lang-en>Ready to start training?</span>
+          <span data-lang-es>Listo para empezar a entrenar?</span>
+        </h2>
+        <p class="guide-cta-sub" data-lang-en>Once your watch is synced, your workouts will be waiting for you every day. Open TrainingPeaks, check the plan, and go.</p>
+        <p class="guide-cta-sub" data-lang-es>Una vez que tu reloj este sincronizado, tus entrenamientos te estaran esperando cada dia. Abre TrainingPeaks, revisa el plan, y sal.</p>
+        <a href="join.html" class="cta-btn">
+          <span data-lang-en>SIGN UP</span>
+          <span data-lang-es>INSCRIBETE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-nav">
+        <a href="index.html"><span data-lang-en>HOME</span><span data-lang-es>INICIO</span></a>
+        <a href="join.html">JOIN</a>
+        <a href="free.html"><span data-lang-en>FREE</span><span data-lang-es>GRATIS</span></a>
+      </div>
+      <p class="footer-social">
+        <a href="https://instagram.com/ugly.pace" target="_blank" rel="noopener">@ugly.pace</a>
+      </p>
+      <p class="footer-tagline">
+        <span data-lang-en>Ugly paces. Ugly faces. Still racing.</span>
+        <span data-lang-es>Ritmos feos. Caras peores. Seguimos corriendo.</span>
+      </p>
+      <p class="footer-copy">&copy; 2026 Ugly Pace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll Reveal
+    document.addEventListener('DOMContentLoaded', function () {
+      var reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        for (var i = 0; i < reveals.length; i++) {
+          var el = reveals[i];
+          var top = el.getBoundingClientRect().top;
+          var trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        }
+      }
+      window.addEventListener('scroll', checkReveal);
+      checkReveal();
+    });
+
+    // Device Picker
+    function selectDevice(device) {
+      // Update buttons
+      var btns = document.querySelectorAll('.picker-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent.trim().toLowerCase().replace(' ', '') === device.replace(' ', '')) {
+          btn.classList.add('active');
+        }
+      });
+
+      // Show/hide content
+      var contents = document.querySelectorAll('.device-content');
+      contents.forEach(function(el) {
+        el.classList.remove('active');
+      });
+
+      var target = document.querySelector('[data-device="' + device + '"]');
+      if (target) {
+        target.classList.add('active');
+      }
+    }
+
+    // Language Switcher
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      var btns = document.querySelectorAll('.lang-btn');
+      btns.forEach(function(btn) {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+          btn.classList.add('active');
+        }
+      });
+      localStorage.setItem('ugly-pace-lang', lang);
+    }
+
+    // Load saved language preference
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('ugly-pace-lang');
+      if (saved) {
+        setLang(saved);
+      } else {
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.startsWith('es')) {
+          setLang('es');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
